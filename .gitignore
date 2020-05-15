@@ -1,0 +1,11 @@
+# LaTeX stuff
+
+*.pdf
+*.aux
+*.log
+*.out
+*.synctex.gz
+
+# Misc
+
+*.DS_Store
