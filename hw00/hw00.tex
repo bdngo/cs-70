@@ -1,0 +1,120 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb, amsfonts, amsthm}
+\usepackage{cancel}
+\usepackage[output-complex-root=j]{siunitx}
+\usepackage[american, nooldvoltagedirection]{circuitikz}
+\usepackage{bm}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{fullpage}
+\usepackage{hyperref}
+
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\thesubsection}{\thesection.\alph{subsection}}
+\renewcommand{\thesubsubsection}{\thesubsection.\roman{subsubsection}}
+\renewcommand{\labelenumi}{\alph{enumi}.}
+
+\newtheorem{genthm}{Theorem}
+
+\newcommand{\unit}[1]{\bm{\hat{#1}}}
+\newcommand{\iprod}[2]{\left\langle #1, #2 \right\rangle}
+\newcommand{\tpose}[1]{\left[#1\right]^{\! \top} \!\!}
+\newcommand{\diff}[1]{\frac{d}{d #1}}
+
+\lstset{
+    language=Python,
+    tabsize=4,
+    basicstyle=\ttfamily,
+    numbers=left,
+    numberstyle=\ttfamily,
+    keywordstyle=\color{blue},
+    frame=single
+}
+
+\title{CS70 HW00}
+\author{Bryan Ngo}
+\date{2020-08-26}
+
+\begin{document}
+
+\maketitle
+
+I worked on this homework by myself.
+
+\section{Administrivia}
+
+\subsection{}
+
+\url{https://www.eecs70.org/}
+
+\subsection{}
+
+\subsubsection{}
+
+\begin{tabular}{||c|c||}
+    \hline
+    \textbf{With Homework} & \\
+    \hline
+    Discussion Attendance & \(5\%\) \\
+    Vitamin & \(5\%\) \\
+    Homework & \(20\%\) \\
+    Midterm & \(30\%\) \\
+    Final & \(40\%\) \\
+    \hline
+\end{tabular} \\
+\begin{tabular}{||c|c||}
+    \hline
+    \textbf{Without Homework} & \\
+    \hline
+    Discussion Attendance & \(6.25\%\) \\
+    Vitamin & \(6.25\%\) \\
+    Midterm & \(37.5\%\) \\
+    Final & \(50\%\) \\
+    \hline
+\end{tabular}
+
+\subsubsection{}
+
+You must attend \(\frac{14}{27}\) for full credit.
+
+\subsubsection{}
+
+Yes, but it will be counted under the section you originally signed up for.
+
+\subsubsection{}
+
+Vitamins are due Fridays at 20:00 PT.
+
+\section{}
+
+\begin{enumerate}
+    \item \textbf{Yes}, Alice and Bob worked \emph{together} on a solution rather than individually, despite having acknowledged each other's work.
+    \item \textbf{No}, Carol used Dan's description of his approach in order to come up with a solution herself, while also crediting Dan.
+    \item \textbf{No}, Erin was assisted by the online resource and simply adopted their approach rather than copying verbatim, while also citing the resource.
+    \item \textbf{Yes}, Frank copied Grace's solution verbatim.
+    \item \textbf{Yes}, Irene was in possession of the entirety of Heidi's solutions.
+    \item \textbf{Yes}, Joe is in possession of active homework solutions.
+\end{enumerate}
+
+\section{Use of Piazza}
+
+\begin{enumerate}
+    \item @11
+    \item Since XYZ is complicated, it'll probably take more than 5 minutes to answer, so it should be relegated to office hours.
+    \item Weekly posts are posted on Sundays, and are required reading.
+\end{enumerate}
+
+\section{Timezone}
+
+The magic word is "soda pies".
+
+\section{Academic Integrity}
+
+I pledge to uphold the university's honor code: to act with honesty, integrity, and respect for others, including their work.
+By signing, I ensure that all written homework I submit will be in my own words, that I will acknowledge any collaboration or help received, and that I will neither give nor receive help on any examinations.
+
+\begin{flushright}
+    \textit{Bryan Ngo}
+\end{flushright}
+
+\end{document}
