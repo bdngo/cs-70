@@ -110,4 +110,139 @@ Thus, \(f(x)\) has a maximum at \(x = \frac{1}{e}\) with a value of \(f\left(\fr
     \item Any even natural number can be represented as the sum of two primes.
 \end{enumerate}
 
+\section{Tautologies and Contradictions}
+
+\subsection{}
+
+\begin{equation}
+    \begin{array}{c|c|c}
+        P & Q & P \implies (Q \land P) \lor (\lnot Q \land P) \\
+        \hline
+        T & T & T \\
+        T & F & T \\
+        F & T & T \\
+        F & F & T
+    \end{array}
+\end{equation}
+Tautology
+
+\subsection{}
+
+\begin{equation}
+    \begin{array}{c|c|c}
+        P & Q & (P \land Q) \land (P \land \lnot Q) \\
+        \hline
+        T & T & F \\
+        T & F & F \\
+        F & T & F \\
+        F & F & F
+    \end{array}
+\end{equation}
+Contradiction
+
+\subsection{}
+
+\begin{equation}
+    \begin{array}{c|c|c}
+        P & Q & P \land (P \implies \lnot Q) \land Q \\
+        \hline
+        T & T & F \\
+        T & F & F \\
+        F & T & F \\
+        F & F & F
+    \end{array}
+\end{equation}
+Contradiction
+
+\subsection{}
+
+\begin{equation}
+    \begin{array}{c|c|c}
+        P & Q & (\lnot P \implies Q) \implies (\lnot Q \implies P) \\
+        \hline
+        T & T & T \\
+        T & F & T \\
+        F & T & T \\
+        F & F & T
+    \end{array}
+\end{equation}
+Tautology
+
+\subsection{}
+
+\begin{equation}
+    \begin{array}{c|c|c}
+        P & Q & (\lnot P \implies \lnot Q) \land (P \implies \lnot Q) \land Q \\
+        \hline
+        T & T & F \\
+        T & F & F \\
+        F & T & T \\
+        F & F & F
+    \end{array}
+\end{equation}
+Neither
+
+\subsection{}
+
+\begin{equation}
+    \begin{array}{c|c|c}
+        P & Q & (\lnot (P \land Q)) \land (P \lor Q) \\
+        \hline
+        T & T & F \\
+        T & F & T \\
+        F & T & T \\
+        F & F & F
+    \end{array}
+\end{equation}
+Neither
+
+\section{Prove or Disprove}
+
+\subsection{}
+
+\begin{genthm}
+    \((\forall n \in \N)\) if \(n\) is odd then \(n^2 + 4n\) is odd.
+\end{genthm}
+\begin{proof}
+By definition, any odd natural number can be written in the form \(2k + 1\), where \(k \in \N\).
+Plugging in,
+\begin{equation}
+    (2k + 1)^2 + 4(2k + 1) = 4k^2 + 4k + 1 + 8k + 4 = 4k^2 + 12k + 5
+\end{equation}
+\(4k^2\) and \(12k\) are even because they are multiplied by even numbers, so their sum must also be even.
+We are then left with the sum of an even number and an odd number, which is always odd.
+\end{proof}
+
+\subsection{}
+
+\begin{genthm}
+    \((\forall a, b \in \R)\) if \(a + b \leqslant 15\) then \(a \leqslant 11\) or \(b \leqslant 4\).
+\end{genthm}
+\begin{proof}
+\textbf{Counterexample}: Let \(a = 16\), \(b = -1\).
+\(a + b \leqslant 15\) , yet \(a > 15\).
+\end{proof}
+
+\subsection{}
+
+\begin{genthm}
+    \(\forall r \in \R\) if \(r^2\) is irrational, then \(r\) is irrational.
+\end{genthm}
+\begin{proof}
+We will prove by contraposition, that being if \(r\) is rational, then \(r^2\) is rational.
+Let \(r = \frac{p}{q}\), where \(p, q \in \Z\), \(q \neq 0\).
+Then, \(r^2 = \left(\frac{p}{q}\right)^2 = \frac{p^2}{q^2}\).
+Since the integers are closed under exponentiation, \(r^2 \in \Q\).
+\end{proof}
+
+\subsection{}
+
+\begin{genthm}
+    \(\forall n \in \Z^+\) \(5n^3 > n!\).
+\end{genthm}
+\begin{proof}
+\textbf{Counterexample}: Let \(n = 7\).
+\(5 (7)^3 = 1715 < 7! = 5040.\)
+\end{proof}
+
 \end{document}
