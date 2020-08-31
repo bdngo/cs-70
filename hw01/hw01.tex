@@ -1,0 +1,113 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb, amsfonts, amsthm}
+\usepackage{cancel}
+\usepackage[output-complex-root=j]{siunitx}
+\usepackage[american, nooldvoltagedirection]{circuitikz}
+\usepackage{bm}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{fullpage}
+\usepackage{hyperref}
+
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\thesubsection}{\thesection.\alph{subsection}}
+\renewcommand{\thesubsubsection}{\thesubsection.\roman{subsubsection}}
+\renewcommand{\labelenumi}{\alph{enumi}.}
+
+\newtheorem{genthm}{Theorem}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\renewcommand{\C}{\mathbb{C}}
+\newcommand{\unit}[1]{\bm{\hat{#1}}}
+\newcommand{\iprod}[2]{\left\langle #1, #2 \right\rangle}
+\newcommand{\tpose}[1]{\left[#1\right]^{\! \top} \!\!}
+\newcommand{\diff}[1]{\frac{d}{d #1}}
+
+\lstset{
+    language=Python,
+    tabsize=4,
+    basicstyle=\ttfamily,
+    numbers=left,
+    numberstyle=\ttfamily,
+    keywordstyle=\color{blue},
+    frame=single
+}
+
+\title{CS70 HW01}
+\author{Bryan Ngo}
+\date{2020-08-30}
+
+\begin{document}
+
+\maketitle
+
+I did this homework by myself.
+
+\section{Calculus Review}
+
+\subsection{}
+
+\begin{equation}
+    \sum_{k = 1}^\infty \frac{9}{2^k} = 9 \sum_{k = 1}^\infty \frac{1}{2^k} = 9
+\end{equation}
+
+\subsection{}
+
+\begin{equation}
+    S = \sum_{i = 0}^n (2n + 1)
+\end{equation}
+
+\subsection{}
+
+\begin{equation}
+    I = \int_0^{\infty} \sin(t) e^{-t} \, dt
+\end{equation}
+Let \(u = \sin(t)\) and \(dv = e^{-t}\), then \(du = \cos(t)\) and \(v = -e^{-t}\),
+\begin{equation}
+    I = -\sin(t) e^{-t}|_0^\infty + \int_0^\infty \cos(t) e^{-t} \, dt
+\end{equation}
+Once more, let \(u = \cos(t)\) and \(dv = e^{-t}\).
+Therefore, \(du = -\sin(t)\) and \(v = -e^{-t}\),
+\begin{align}
+    I &= \lim_{R \to \infty} (-\sin(R) e^{-R} + \sin(0) e^{0}) + \int_0^\infty \cos(t) e^{-t} \, dt \\
+    &= -\cos(t) e^{-t}|_0^\infty - \underbrace{\int_0^\infty \sin(t) e^{-t} \, dt}_I \\
+    \Rightarrow 2I &= \lim_{R \to \infty} (-\cos(R) e^{-R} + \cos(0) e^0) \\
+    &= 1 \Rightarrow I = \frac{1}{2}
+\end{align}
+
+\subsection{}
+
+\begin{equation}
+    f(x) = -x \ln(x)
+\end{equation}
+To find the max, we first find the derivative with respect to \(x\),
+\begin{equation}
+    \diff{x} (-x \ln(x)) = (-\ln(x)) + (-1) = -\ln(x) - 1
+\end{equation}
+Setting \(f'(x) = 0\),
+\begin{equation}
+    -\ln(x) - 1 = 0 \implies x = \frac{1}{e}
+\end{equation}
+Since \(x = 0\) is not in the domain of \(f(x)\), we do not need to consider it.
+Using the second derivative test,
+\begin{equation}
+    f''(x)|_{x = \frac{1}{e}} = \left.-\frac{1}{x}\right|_{x = \frac{1}{e}} = -e
+\end{equation}
+Since \(f''\left(\frac{1}{e}\right) < 0\), the value is a maximum.
+Thus, \(f(x)\) has a maximum at \(x = \frac{1}{e}\) with a value of \(f\left(\frac{1}{e}\right) = \frac{1}{e}\).
+
+\section{Propositional Practice}
+
+\begin{enumerate}
+    \item \(|\{x \in \R | x^2 = 0\}| = 1\)
+    \item \((\forall a, b \in \Q)(\exists c \in \Q)(a < b \implies a < c < b)\)
+    \item \((\forall x \in \Z)(x^2 > 4 \implies x > 2 \lor x < -2)\)
+    \item All real numbers are also complex numbers.
+    \item The difference of the squares of any two integers will never be equal to \(10\).
+    \item Any even natural number can be represented as the sum of two primes.
+\end{enumerate}
+
+\end{document}
