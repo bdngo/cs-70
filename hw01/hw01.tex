@@ -219,8 +219,13 @@ We are then left with the sum of an even number and an odd number, which is alwa
     \((\forall a, b \in \R)\) if \(a + b \leqslant 15\) then \(a \leqslant 11\) or \(b \leqslant 4\).
 \end{genthm}
 \begin{proof}
-\textbf{Counterexample}: Let \(a = 16\), \(b = -1\).
-\(a + b \leqslant 15\) , yet \(a > 15\).
+By contraposition,
+\begin{align}
+    (\forall a, b \in \R)((a + b \leqslant 15) &\implies (a \leqslant 11) \lor (b \leqslant 4)) \\
+    \Rightarrow (\forall a, b \in \R)(\lnot ((a \leqslant 11) \lor (b \leqslant 4)) &\implies (a + b > 15)) \\
+    \Rightarrow (\forall a, b \in \R)((a > 11) \land (b > 4) &\implies (a + b > 15))
+\end{align}
+The proof holds because since \(a > 11\) and \(b > 4\), their sum must be larger than their upper limit, that being 15.
 \end{proof}
 
 \subsection{}
