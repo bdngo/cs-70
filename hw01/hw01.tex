@@ -51,13 +51,13 @@ I did this homework by myself.
 \subsection{}
 
 \begin{equation}
-    \sum_{k = 1}^\infty \frac{9}{2^k} = 9 \sum_{k = 1}^\infty \frac{1}{2^k} = 9
+    \sum_{k = 1}^\infty \frac{9}{2^k} = 9 \sum_{k = 1}^\infty \frac{1}{2^k} = 9 \frac{\frac{1}{2}}{1 - \frac{1}{2}} = 9
 \end{equation}
 
 \subsection{}
 
 \begin{equation}
-    S = \sum_{i = 0}^n (2n + 1)
+    S = \sum_{i = 0}^n (2i + 1)
 \end{equation}
 
 \subsection{}
@@ -75,7 +75,7 @@ Therefore, \(du = -\sin(t)\) and \(v = -e^{-t}\),
     I &= \lim_{R \to \infty} (-\sin(R) e^{-R} + \sin(0) e^{0}) + \int_0^\infty \cos(t) e^{-t} \, dt \\
     &= -\cos(t) e^{-t}|_0^\infty - \underbrace{\int_0^\infty \sin(t) e^{-t} \, dt}_I \\
     \Rightarrow 2I &= \lim_{R \to \infty} (-\cos(R) e^{-R} + \cos(0) e^0) \\
-    &= 1 \Rightarrow I = \frac{1}{2}
+    &= 1 \implies I = \frac{1}{2}
 \end{align}
 
 \subsection{}
@@ -104,7 +104,7 @@ Thus, \(f(x)\) has a maximum at \(x = \frac{1}{e}\) with a value of \(f\left(\fr
 \begin{enumerate}
     \item \(|\{x \in \R | x^2 = 0\}| = 1\)
     \item \((\forall a, b \in \Q)(\exists c \in \Q)(a < b \implies a < c < b)\)
-    \item \((\forall x \in \Z)(x^2 > 4 \implies x > 2 \lor x < -2)\)
+    \item \((\forall x \in \Z)(x^2 > 4 \implies (x > 2) \lor (x < -2))\)
     \item All real numbers are also complex numbers.
     \item The difference of the squares of any two integers will never be equal to \(10\).
     \item Any even natural number can be represented as the sum of two primes.
@@ -207,10 +207,10 @@ Neither
 By definition, any odd natural number can be written in the form \(2k + 1\), where \(k \in \N\).
 Plugging in,
 \begin{equation}
-    (2k + 1)^2 + 4(2k + 1) = 4k^2 + 4k + 1 + 8k + 4 = 4k^2 + 12k + 5
+    (2k + 1)^2 + 4(2k + 1) = 4k^2 + 4k + 1 + 8k + 4 = 4k^2 + 12k + 5 = 2(2k^2 + 6k + 1) + 1
 \end{equation}
-\(4k^2\) and \(12k\) are even because they are multiplied by even numbers, so their sum must also be even.
-We are then left with the sum of an even number and an odd number, which is always odd.
+\(2k^2 + 6k + 1 \in \N\) for natural \(k\) due to closure under addition, multiplication, and natural exponentiation.
+Therefore, the overall result is odd.
 \end{proof}
 
 \subsection{}
@@ -234,10 +234,10 @@ The proof holds because since \(a > 11\) and \(b > 4\), their sum must be larger
     \(\forall r \in \R\) if \(r^2\) is irrational, then \(r\) is irrational.
 \end{genthm}
 \begin{proof}
-We will prove by contraposition, that being if \(r\) is rational, then \(r^2\) is rational.
+By contraposition, if \(r\) is rational, then \(r^2\) is rational.
 Let \(r = \frac{p}{q}\), where \(p, q \in \Z\), \(q \neq 0\).
 Then, \(r^2 = \left(\frac{p}{q}\right)^2 = \frac{p^2}{q^2}\).
-Since the integers are closed under exponentiation, \(r^2 \in \Q\).
+Since the rationals are closed under exponentiation by integers, \(r^2 \in \Q\).
 \end{proof}
 
 \subsection{}
@@ -248,6 +248,18 @@ Since the integers are closed under exponentiation, \(r^2 \in \Q\).
 \begin{proof}
 \textbf{Counterexample}: Let \(n = 7\).
 \(5 (7)^3 = 1715 < 7! = 5040.\)
+\end{proof}
+
+\section{Twin Primes}
+
+\subsection{}
+
+\begin{genthm}
+    Let \(p > 3\) be some prime.
+    Then, \(p = 3k \pm 1\) for some \(k \in \Z\).
+\end{genthm}
+\begin{proof}
+By contraposition, if \(p\) cannot be represented in the form \(3k \pm 1\), it then \(p\) is not prime.
 \end{proof}
 
 \end{document}
