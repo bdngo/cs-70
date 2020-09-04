@@ -13,8 +13,10 @@
 \renewcommand{\thesubsection}{\thesection.\alph{subsection}}
 \renewcommand{\thesubsubsection}{\thesubsection.\roman{subsubsection}}
 \renewcommand{\labelenumi}{\alph{enumi}.}
+\newcommand{\lemmaautorefname}{Lemma}
 
-\newtheorem{genthm}{Theorem}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
 
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\Z}{\mathbb{Z}}
@@ -200,66 +202,121 @@ Neither
 
 \subsection{}
 
-\begin{genthm}
+\begin{theorem}
     \((\forall n \in \N)\) if \(n\) is odd then \(n^2 + 4n\) is odd.
-\end{genthm}
+\end{theorem}
 \begin{proof}
-By definition, any odd natural number can be written in the form \(2k + 1\), where \(k \in \N\).
-Plugging in,
-\begin{equation}
-    (2k + 1)^2 + 4(2k + 1) = 4k^2 + 4k + 1 + 8k + 4 = 4k^2 + 12k + 5 = 2(2k^2 + 6k + 1) + 1
-\end{equation}
-\(2k^2 + 6k + 1 \in \N\) for natural \(k\) due to closure under addition, multiplication, and natural exponentiation.
-Therefore, the overall result is odd.
+    By definition, any odd natural number can be written in the form \(2k + 1\), where \(k \in \N\).
+    Plugging in,
+    \begin{equation}
+        (2k + 1)^2 + 4(2k + 1) = 4k^2 + 4k + 1 + 8k + 4 = 4k^2 + 12k + 5 = 2(2k^2 + 6k + 1) + 1
+    \end{equation}
+    \(2k^2 + 6k + 1 \in \N\) for natural \(k\) due to closure under addition, multiplication, and natural exponentiation.
+    Therefore, the overall result is odd.
 \end{proof}
 
 \subsection{}
 
-\begin{genthm}
+\begin{theorem}
     \((\forall a, b \in \R)\) if \(a + b \leqslant 15\) then \(a \leqslant 11\) or \(b \leqslant 4\).
-\end{genthm}
+\end{theorem}
 \begin{proof}
-By contraposition,
-\begin{align}
-    (\forall a, b \in \R)((a + b \leqslant 15) &\implies (a \leqslant 11) \lor (b \leqslant 4)) \\
-    \Rightarrow (\forall a, b \in \R)(\lnot ((a \leqslant 11) \lor (b \leqslant 4)) &\implies (a + b > 15)) \\
-    \Rightarrow (\forall a, b \in \R)((a > 11) \land (b > 4) &\implies (a + b > 15))
-\end{align}
-The proof holds because since \(a > 11\) and \(b > 4\), their sum must be larger than their upper limit, that being 15.
+    By contraposition,
+    \begin{align}
+        (\forall a, b \in \R)((a + b \leqslant 15) &\implies (a \leqslant 11) \lor (b \leqslant 4)) \\
+        \Rightarrow (\forall a, b \in \R)(\lnot ((a \leqslant 11) \lor (b \leqslant 4)) &\implies (a + b > 15)) \\
+        \Rightarrow (\forall a, b \in \R)((a > 11) \land (b > 4) &\implies (a + b > 15))
+    \end{align}
+    The proof holds because since \(a > 11\) and \(b > 4\), their sum must be larger than their upper limit, that being 15.
 \end{proof}
 
 \subsection{}
 
-\begin{genthm}
+\begin{theorem}
     \(\forall r \in \R\) if \(r^2\) is irrational, then \(r\) is irrational.
-\end{genthm}
+\end{theorem}
 \begin{proof}
-By contraposition, if \(r\) is rational, then \(r^2\) is rational.
-Let \(r = \frac{p}{q}\), where \(p, q \in \Z\), \(q \neq 0\).
-Then, \(r^2 = \left(\frac{p}{q}\right)^2 = \frac{p^2}{q^2}\).
-Since the rationals are closed under exponentiation by integers, \(r^2 \in \Q\).
+    By contraposition, if \(r\) is rational, then \(r^2\) is rational.
+    Let \(r = \frac{p}{q}\), where \(p, q \in \Z\), \(q \neq 0\).
+    Then, \(r^2 = \left(\frac{p}{q}\right)^2 = \frac{p^2}{q^2}\).
+    Since the rationals are closed under exponentiation by integers, \(r^2 \in \Q\).
 \end{proof}
 
 \subsection{}
 
-\begin{genthm}
+\begin{theorem}
     \(\forall n \in \Z^+\) \(5n^3 > n!\).
-\end{genthm}
+\end{theorem}
 \begin{proof}
-\textbf{Counterexample}: Let \(n = 7\).
-\(5 (7)^3 = 1715 < 7! = 5040.\)
+    \textbf{Counterexample}: Let \(n = 7\).
+    \(5 (7)^3 = 1715 < 7! = 5040.\)
 \end{proof}
 
 \section{Twin Primes}
 
 \subsection{}
 
-\begin{genthm}
+\begin{theorem}
     Let \(p > 3\) be some prime.
     Then, \(p = 3k \pm 1\) for some \(k \in \Z\).
-\end{genthm}
+\end{theorem}
 \begin{proof}
-By contraposition, if \(p\) cannot be represented in the form \(3k \pm 1\), it then \(p\) is not prime.
+    By contraposition, if \(p\) cannot be represented in the form \(3k \pm 1\), it then \(p\) is not prime.
+    We can prove that all natural numbers greater than \(3\) assume the form \(\{3k \pm 1, 3k\}\):
+    \begin{lemma} \label{twin-prime-lemma}
+        \((\forall n \in \N) (\exists k \in \N) ((n > 3) \implies (n = 3k \pm 1) \lor (3 | n))\)
+    \end{lemma}
+    \begin{proof}
+        \begin{equation}
+            \begin{array}{c|c}
+                n & \text{Form} \\
+                \hline
+                4 & 3k + 1 \\
+                5 & 3k - 1 \\
+                6 & 3k \\
+                7 & 3k + 1 \\
+                8 & 3k - 1 \\
+                9 & 3k \\
+                \vdots & \vdots
+            \end{array}
+        \end{equation}
+        As observed, a pattern emerges.
+        Let \(q\) be some natural number such that \(3 | q\).
+        We can get the numbers one greater and one less than \(q\) by doing \(3k \pm 1\).
+        We now have a collection of 3 naturals, so the cycle repeats.
+    \end{proof}
+    By \autoref{twin-prime-lemma}, all integers can be represented in the three forms.
+    However, the only way for \(p\) not be represented in the form \(3k \pm 1\) is for \(p = 3k\).
+    This means that \(3 | p\) and is not prime.
 \end{proof}
+
+\subsection{}
+
+\begin{theorem}
+    5 is the only prime number that is in two different twin prime pairs.
+\end{theorem}
+\begin{proof}
+    Let \(a, b, p\) be prime numbers.
+    Then, the relationship as stated in the theorem is
+    \begin{equation}
+        a - p = p - b = 2
+    \end{equation}
+    We can prove by cases that \((p \nless 5) \land (p \ngtr 5) \implies (p = 5)\).
+    For \(p < 5\), there is only \(\{2, 3\}\).
+    \(2\) is not a twin prime, and \(3\) is only a twin prime with \(5\). \\
+    For \(p > 5\), if the difference between the primes is two, then if \(a\) or \(b\) is \(3k \pm 1\), then \(p = 3k \mp 1\).
+    It is important to note that \(a\) and \(b\) cannot both be \(3k \pm 1\) because they are by definition, distinct, leading to two subcases:
+    \begin{align}
+        (3k + 1) - (3k - 1) = (3k - 1) - (3k - 1) &= 2 \\
+        2 \overset{?}{=} 0 &\overset{?}{=} 2 \\
+        (3k - 1) - (3k + 1) = (3k + 1) - (3k + 1) &= 2 \\
+        -2 \overset{?}{=} 0 &\overset{?}{=} 2
+    \end{align}
+    This means it is impossible for any \(p > 5\) to be in two twin primes so long as \(p > 3\).
+\end{proof}
+
+\section{Social Network}
+
+
 
 \end{document}
