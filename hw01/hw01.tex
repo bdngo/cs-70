@@ -456,7 +456,7 @@ Neither
     \begin{align}
         (f(x) \in f(A)) &\lor (f(x) \in f(B)) \\
         \implies f(x) &\in f(A) \cup f(B) \\
-        \implies f(A \cup B) &\subseteq f(A) \cup f(B) \\
+        \implies f(A \cup B) &\subseteq f(A) \cup f(B)
     \end{align}
     Now, let \(y \in f(A) \cup f(B)\) with \(f(x) = y\).
     Then,
@@ -480,10 +480,28 @@ Neither
     \begin{align}
         (f(x) \in f(A)) &\land (f(x) \in f(B)) \\
         \implies f(x) &\in f(A) \cap f(B) \\
-        \implies f(A \cap B) &\subseteq f(A) \cap f(B) \\
+        \implies f(A \cap B) &\subseteq f(A) \cap f(B)
     \end{align}
 \end{proof}
-\textbf{Counterexample}: 
+\textbf{Counterexample}: Let \(f(x) = \sqrt{x}\), \(A = \{i, 0, 1\}\), \(B = \{-1, 0\}\).
+
+\subsection{}
+
+\begin{theorem}
+    \(f(A \setminus B) \supseteq f(A) \setminus f(B)\).
+\end{theorem}
+\begin{proof}
+    Suppose \(y \in f(A) \setminus f(B)\) with \(f(x) = y\).
+    Then,
+    \begin{align}
+        (y \in f(A)) &\land (y \notin f(B)) \\
+        \implies (x \in A) &\land (x \notin B) \\
+        \implies x &\in A \setminus B \\
+        \implies f(x) = y &\in f(A \setminus B)
+    \end{align}
+    Then, \(f(A \setminus B) \supseteq f(A) \setminus f(B)\).
+\end{proof}
+\textbf{Counterexample}: Let \(f(x) = \sqrt{x}\), \(A = \{i, 0, 1\}\), \(B = \{-1, 0\}\).
 
 \section{Sundry}
 
