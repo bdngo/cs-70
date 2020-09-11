@@ -1,0 +1,115 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb, amsfonts, amsthm}
+\usepackage{cancel}
+\usepackage[output-complex-root=j]{siunitx}
+\usepackage[american, nooldvoltagedirection]{circuitikz}
+\usepackage{bm}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{fullpage}
+\usepackage{hyperref}
+
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\thesubsection}{\thesection.\alph{subsection}}
+\renewcommand{\thesubsubsection}{\thesubsection.\roman{subsubsection}}
+
+\newtheorem{theorem}{Theorem}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\renewcommand{\C}{\mathbb{C}}
+\newcommand{\unit}[1]{\bm{\hat{#1}}}
+\newcommand{\iprod}[2]{\left\langle #1, #2 \right\rangle}
+\newcommand{\tpose}[1]{\left[#1\right]^{\! \top} \!\!}
+\newcommand{\diff}[1]{\frac{d}{d #1}}
+
+\lstset{
+    language=Python,
+    tabsize=4,
+    basicstyle=\ttfamily,
+    numbers=left,
+    numberstyle=\ttfamily,
+    keywordstyle=\color{blue},
+    frame=single
+}
+
+\title{CS70 HW02}
+\author{Bryan Ngo}
+\date{2020-09-07}
+
+\begin{document}
+
+\maketitle
+
+\section{Induction}
+
+\subsection{}
+
+\begin{theorem}
+    For all natural numbers \(n > 2\), \(2^n > 2n + 1\).
+\end{theorem}
+\begin{proof}
+    Base case: \(n = 3\). \(2^3 > 2(3) + 1 \to 8 > 6\).
+    Inductive hypothesis: \(2^k > 2k + 1\).
+    \begin{align}
+        2^{k + 1} &= 2 \cdot 2^k \\
+        &> 2 (2k + 1) \\
+        &= 4k + 2 \\
+        &> 2k + 2 \\
+        &= 2(k + 1) \\
+    \end{align}
+\end{proof}
+
+\subsection{}
+
+\begin{theorem}
+    For all positive integers \(n\), \(1^2 + 2^2 + \cdots + n^2 = \frac{n (n + 1) (2n + 1)}{6}\).
+\end{theorem}
+\begin{proof}
+    Base case: \(n = 1\). \(1^2 = \frac{1 \cdot 2 \cdot 3}{6} = 1\).
+    Inductive hypothesis: \(\sum_{i = 1}^k i^2 = \frac{k (k + 1) (2k + 1)}{6}\).
+    \begin{align}
+        \sum_{i = 1}^{k + 1} i^2 &= \left(\sum_{i = 1}^k i^2\right) + (k + 1)^2 \\
+        &= \frac{k (k + 1) (2k + 1)}{6} + (k + 1)^2 \\
+        &= \frac{k (k + 1) (2k + 1) + 6(k + 1)^2}{6} \\
+        &= \frac{(k + 1) (k (2k + 1) + 6(k + 1))}{6} \\
+        &= \frac{(k + 1) (2k^2 + 7k + 6)}{6} \\
+        &= \frac{(k + 1) (k + 2) (2k + 3)}{6}
+    \end{align}
+\end{proof}
+
+\subsection{}
+
+\begin{theorem}
+    For all positive natural numbers \(n\), \(\frac{5}{4} \cdot 8^n + 3^{3n - 1}\) is divisible by \(19\).
+\end{theorem}
+\begin{proof}
+    Base case: \(n = 1\). \(19 | (10 + 9)\).
+    Inductive hypothesis: \(5 \cdot 2^{3k + 1} + 3^{3k - 1} = 19q\) for \(q \in \Z\).
+    \begin{align}
+        5 \cdot 2^{3 (k + 1) + 1} + 3^{3 (k + 1) - 1} &= 5 \cdot 2^{3k + 4} + 3^{3k + 2} \\
+        &= 5 \cdot 8 \cdot 2^{3k + 1} + 27 \cdot 3^{3k - 1} \\
+        &= 5 \cdot 8 \cdot 2^{3k + 1} + (8 + 19) \cdot 3^{3k - 1} \\
+        &= 8 (5 \cdot 2^{3k + 1} + 3^{3k - 1}) + 19 \cdot 3^{3k - 1} \\
+        &= 8 \cdot 19q + 19 \cdot 3^{3k - 1} \\
+        &= 19 (8q + 3^{3k - 1})
+    \end{align}
+\end{proof}
+
+\section{Negative Pacman Returns}
+
+\begin{theorem}
+    Pacman is able to reach \((0, 0)\) from any \((i, j) \in \N^2\) in finite time.
+\end{theorem}
+
+\begin{proof}
+    Base case: Pacman is at \((0, 0)\), so no 
+\end{proof}
+
+\section{Sundry}
+
+I worked on this homework by myself.
+
+\end{document}
