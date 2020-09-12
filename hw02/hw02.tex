@@ -32,7 +32,8 @@
     numbers=left,
     numberstyle=\ttfamily,
     keywordstyle=\color{blue},
-    frame=single
+    frame=single,
+    breaklines=true
 }
 
 \title{CS70 HW02}
@@ -103,9 +104,24 @@
 \begin{theorem}
     Pacman is able to reach \((0, 0)\) from any \((i, j) \in \N^2\) in finite time.
 \end{theorem}
-
 \begin{proof}
-    Base case: Pacman is at \((0, 0)\), so no 
+    Base case: Pacman is at \((0, 0)\), they can reach \((0, 0)\) in \SI{0}{\second}.
+    Inductive hypothesis: Pacman can reach \((0, 0)\) from \((i, j)\) in \(k\) seconds.
+    There are 3 cases to consider:
+    \begin{itemize}
+        \item If Pacman is at \((i - 1, j)\), then Pacman moves one step to the right, reaching \((i, j)\), so they will reach \((0, 0)\) in \(k + 1\) seconds.
+        \item If Pacman is at \((i, j - 1)\), then Pacman moves one step up, reaching \((i, j)\), so they will reach \((0, 0)\) in \(k + 1\) seconds.
+        \item If Pacman is at \((i - 1, j - 1)\), this is simply the union of the previous two cases, so they will reach \((0, 0)\) in \(k + 2\) seconds.
+    \end{itemize}
+\end{proof}
+
+\section{Losing Marbles}
+
+\begin{theorem}
+    Assuming perfect play from both players, it is possible to create starting conditions \((R, G, B)\) such that the first player wins.
+\end{theorem}
+\begin{proof}
+    We can assign a weight to each color such that at every step, no matter what move is played, the weight always goes down by one.
 \end{proof}
 
 \section{Sundry}
