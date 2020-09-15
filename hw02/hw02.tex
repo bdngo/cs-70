@@ -58,9 +58,10 @@
         2^{k + 1} &= 2 \cdot 2^k \\
         &> 2 (2k + 1) \\
         &= 4k + 2 \\
-        &> 2k + 2 \\
-        &= 2(k + 1) \\
+        &> 2k + 3 \\
+        &= 2(k + 1) + 1
     \end{align}
+    where \(4k + 2 > 2k + 3\) is trivally true for \(k > 2\), since \(14 > 9\) and the equations are both monotonically increasing.
 \end{proof}
 
 \subsection{}
@@ -88,12 +89,12 @@
 \end{theorem}
 \begin{proof}
     Base case: \(n = 1\). \(19 | (10 + 9)\).
-    Inductive hypothesis: \(5 \cdot 2^{3k + 1} + 3^{3k - 1} = 19q\) for \(q \in \Z\).
+    Inductive hypothesis: \(5 \cdot 2^{3k - 2} + 3^{3k - 1} = 19q\) for \(q \in \Z\).
     \begin{align}
-        5 \cdot 2^{3 (k + 1) + 1} + 3^{3 (k + 1) - 1} &= 5 \cdot 2^{3k + 4} + 3^{3k + 2} \\
-        &= 5 \cdot 8 \cdot 2^{3k + 1} + 27 \cdot 3^{3k - 1} \\
-        &= 5 \cdot 8 \cdot 2^{3k + 1} + (8 + 19) \cdot 3^{3k - 1} \\
-        &= 8 (5 \cdot 2^{3k + 1} + 3^{3k - 1}) + 19 \cdot 3^{3k - 1} \\
+        5 \cdot 2^{3 (k + 1) - 2} + 3^{3 (k + 1) - 1} &= 5 \cdot 2^{3k + 1} + 3^{3k + 2} \\
+        &= 5 \cdot 8 \cdot 2^{3k - 2} + 27 \cdot 3^{3k - 1} \\
+        &= 5 \cdot 8 \cdot 2^{3k - 2} + (8 + 19) \cdot 3^{3k - 1} \\
+        &= 8 (5 \cdot 2^{3k - 2} + 3^{3k - 1}) + 19 \cdot 3^{3k - 1} \\
         &= 8 \cdot 19q + 19 \cdot 3^{3k - 1} \\
         &= 19 (8q + 3^{3k - 1})
     \end{align}
@@ -117,15 +118,164 @@
 
 \section{Losing Marbles}
 
-\begin{theorem}
+\subsection{}
+
+\begin{theorem} \label{thm:3a}
     Assuming perfect play from both players, it is possible to create starting conditions \((R, G, B)\) such that the first player wins.
 \end{theorem}
 \begin{proof}
     We can assign a weight to each color such that at every step, no matter what move is played, the weight always goes down by one.
+    We can construct a linear system of equations that represents the desired change in weight,
+    \begin{equation}
+        \begin{bmatrix}
+            -1 & 3 & 0 \\
+            0 & -2 & 7 \\
+            0 & 0 & -1
+        \end{bmatrix}
+        \begin{bmatrix}
+            R \\
+            G \\
+            B
+        \end{bmatrix}
+        =
+        \begin{bmatrix}
+            -1 \\
+            -1 \\
+            -1
+        \end{bmatrix}
+    \end{equation}
+    Using Gaussian elimination, we find that the weights are
+    \begin{equation}
+        \begin{bmatrix}
+            R \\
+            G \\
+            B
+        \end{bmatrix}
+        =
+        \begin{bmatrix}
+            13 \\
+            4 \\
+            1
+        \end{bmatrix}
+    \end{equation}
+    This means that as long as there is a \(13:4:1\) ratio between the marbles, the weight will always go down by one no matter what move is played.
+    The other condition that ensure that the first player wins is that the total weight of the marbles must be odd.
+    This is because the first player's turn always occurs at an odd number.
+    That means that on the second-to-last turn of the game, the first player will perform the move that reduces the total weight to \(0\), ending the game.
+    In short, the equation describing the game is
+    \begin{equation}
+        13R + 4G + B = 2k + 1, k \in \N
+    \end{equation}
+\end{proof}
+
+\subsection{}
+
+\begin{theorem}
+    Given a finite amount of marbles in the urn, the game will end in a finite amount of time.
+\end{theorem}
+\begin{proof}
+    Base case: When there are \((R, G, B) \to (0, \{0, 1\}, 1)\) marbles in the urn.
+    The game ends in one turn when the first player takes one blue marble.
+    Inductive hypothesis: Given \(k \in \N\) marbles in the urn, the game will end in \(t\) turns.
+    At the inductive step, the game is at \((R, G, B)\).
+    There are three cases to consider:
+    \begin{enumerate}
+        \item \((R + 1, G, B)\).
+        The game plays out as so:
+        \begin{enumerate}
+            \item P1 removes 1 red marble, making the set \(R, G + 3, B\)
+            \item P2 removes 2 green marbles, making the set \(R, G + 1, B + 7\)
+            \item P1 and P2 sequentially remove one blue, so the game will finish in \(t + 9\) turns.
+        \end{enumerate}
+        If \(G + 1\) completes another pair, then the game adds another \(8\) turns, allowing it to complete in \(t + 17\) turns.
+        \item \((R, G + 1, B)\).
+        If \(G + 1\) adds another pair, then the game will complete in \(t + 8\) turns.
+        If not, then the game completes in \(t\) turns.
+        \item \((R, G, B + 1)\).
+        Trivially, the game ends in \(t + 1\) turns.
+    \end{enumerate}
+\end{proof}
+
+\section{Nothing Can Be Better Than Something}
+
+\subsection{}
+
+\begin{theorem}
+    Given the stable matching problem with unmatched entities, a stable pairing still exists.
+\end{theorem}
+\begin{proof}
+    We can introduce virtual entities that unmatched are matched to.
+    These entities do not actually exist but serve to transform the problem.
+    Let there be as many virtual entites as there are real entities.
+    These entities will have a ranking that starts with their respective unmatched real entity first, followed by an arbitrary sequence.
+    Likewise, the unmatched real entities will have a ranking of the virtual entities last, preceded by real entities.
+    This ensures that the real entities exhaust the pool of real entities before resorting to the virtual entities, while the virtual entities keep getting rejected by the real entities until absolutely necessary.
+    Once we do that, the problem is transformed to the canonical stable matching problem.
+    Using Theorem 4.1 from \href{https://www.eecs70.org/static/notes/n4.pdf}{Note 4}, we can prove that the matching will be stable.
+\end{proof}
+
+\subsection{}
+
+\begin{theorem}
+    If there exists an unmatched entity in one stable matching, they must be unmatched in any other stable matching.
+\end{theorem}
+\begin{proof}
+    Assume some unmatched entity \(g_1\) in stable pairing \(S\) who is matched \((g_1, b_1)\) in another stable pairing \(T\).
+    This means that \(b_1\) is paired with some \(g_2\) in \(S\).
+    Then, the pairing is as shown:
+    \begin{equation}
+        \begin{array}{c|c}
+            S & T \\
+            \hline
+            (g_1, \dagger) & (g_1, b_1) \\
+            (g_2, b_1) & (g_2, b_2) \\
+            (g_3, b_2) & (g_3, b_3) \\
+            \vdots & \vdots
+        \end{array}
+    \end{equation}
+    This means that when all entities are eventually matched, \(g_1\) gets matched in \(S\), contradicting the premise that \(g_1\) was unmatched, proving the theorem.
+\end{proof}
+
+\section{The Ranking List}
+
+\subsection{}
+
+\begin{theorem}
+    \begin{equation}
+        \sum_{m \in M} P_j(m) - \sum_{w \in W} R_j(w) = n
+    \end{equation}
+    where \(P_j(m)\) is the rank function, \(R_j(w)\) is the rejection function, and \(n\) is the number of applicants/jobs, meaning that the sum is independent on day \(j\).
+\end{theorem}
+\begin{proof}
+    Base case: \(j = 1\).
+    Since all applicants in \(M\) propose to their first choice on the first day, \(\sum_{m \in M} P_j(m) = n\).
+    Since no job has yet to reject an applicant, \(\sum_{w \in W} R_j(w) = 0\).
+    So for \(j = 1\), \(\sum_{m \in M} P_j(m) - \sum_{w \in W} R_j(w) = n\).
+    Inductive hypothesis: \(\sum_{m \in M} P_k(m) - \sum_{w \in W} R_k(w) = n\).
+    Then, on \(j = k + 1\), assume applicant \(m\) is rejected, then the sum of rejection functions increases by one.
+    At the same time, however, since applicant \(m\) was rejected, they then go to their next choice, which also increases the sum over rank functions by one.
+    Therefore, on \(j = k + 1\), \(\sum_{m \in M} P_{k + 1}(m) - \sum_{w \in W} R_{k + 1}(w) = n\).
+\end{proof}
+
+\begin{theorem}
+    For even \(n\) applicants/jobs, one of the applicants or jobs must be matched to something that is ranked in the top half of their preference list.
+\end{theorem}
+\begin{proof}
+    Assume that no entities get matched with an entity from the top half of their preferences.
+    Then, this means that they get rejected \(\frac{n}{2}\) times.
+    This means that there are \(\frac{n^2}{2}\) total rejections.
+    On average, this means the number of rejections \emph{on average} is also \(\frac{n}{2}\).
+    This means each job has rejected on average \(\frac{n}{2}\) applicants.
+    So their next best applicant occurs at \(\frac{n}{2} - 1\), leaving us with a contradiction since this is at the top half, violating our assumption that both entities must accept from the bottom half.
 \end{proof}
 
 \section{Sundry}
 
-I worked on this homework by myself.
+I did homework with:
+\begin{itemize}
+    \item Manny Fuentes \href{mailto:mfuentes@berkeley.edu}{mfuentes@berkeley.edu}
+    \item Avery Perez \href{mailto:aj_perez@berkeley.edu}{aj\_perez@berkeley.edu}
+    \item Victor Zhang \href{mailto:vzhang6@berkeley.edu}{vzhang6@berkeley.edu}
+\end{itemize}
 
 \end{document}
