@@ -1,0 +1,89 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb, amsfonts, amsthm}
+\usepackage{cancel}
+\usepackage[output-complex-root=j]{siunitx}
+\usepackage[american, nooldvoltagedirection]{circuitikz}
+\usepackage{bm}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{fullpage}
+\usepackage{hyperref}
+
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\thesubsection}{\thesection.\alph{subsection}}
+\renewcommand{\thesubsubsection}{\thesubsection.\roman{subsubsection}}
+\renewcommand{\labelenumi}{\alph{enumi}.}
+
+\newtheorem{theorem}{Theorem}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\renewcommand{\C}{\mathbb{C}}
+\newcommand{\unit}[1]{\bm{\hat{#1}}}
+\newcommand{\iprod}[2]{\left\langle #1, #2 \right\rangle}
+\newcommand{\tpose}[1]{\left[#1\right]^{\! \top} \!\!}
+\newcommand{\diff}[1]{\frac{d}{d #1}}
+
+\lstset{
+    language=Python,
+    tabsize=4,
+    basicstyle=\ttfamily,
+    numbers=left,
+    numberstyle=\ttfamily,
+    keywordstyle=\color{blue},
+    frame=single
+}
+
+\title{CS 70 HW03}
+\author{Bryan Ngo}
+\date{2020-09-14}
+
+\begin{document}
+
+\maketitle
+
+\section{Graph Basics}
+
+\begin{enumerate}
+    \item
+    \begin{align}
+        V &= \{A, B, C, D, E, F, G, H\} \\
+        E &= \{(A, F), (A, B), (B, C), (B, E), (C, D), (D, H), (D, B), (E, D), (E, G), (G, F), (F, G), (F, E), (H, G)\}
+    \end{align}
+    \item \(G\) has the highest in-degree of \(3\), and \(A\) has the lowest in-degree of \(0\).
+    Vertices with an in-degree of \(1\) are \(\{C, H\}\).
+    Vertices with an in-degree of \(2\) are \(\{B, D, E, F\}\).
+    \item The paths from \(B\) to \(F\) are \(\{(B, E, G, F), (B, C, D, H, G, F)\}\).
+    The path \((B, E, G, F)\) is shortest.
+    \item i and ii are cycles.
+    \item i, ii, iii, and vi are walks.
+    \item iii is a tour.
+    \item False
+    \item True
+    \item False
+\end{enumerate}
+
+\section{Binary Trees}
+
+\subsection{}
+
+\begin{theorem} \label{thm:2a-1}
+    Let \(T\) be a binary tree with \(h(T) > 0\), where \(h\) is the height of the tree.
+    Then, let \(r\) be the root with left and right branches \(u, v\), respectively.
+    Removing \(r\) results in two new binary trees \(L, R\) with respective roots \(u, v\).
+\end{theorem}
+\begin{proof}
+    Removing \(r\) reduces the degree of both \(u, v\) by one, so they both now have degree \(2\).
+    Thus, by our definition of a binary tree, they form roots.
+\end{proof}
+
+\begin{theorem}
+    \begin{equation}
+        h(T) = \max(h(L), h(R)) + 1
+    \end{equation}
+    where \(T, L, R\) are as defined in \autoref{thm:2a-1}.
+\end{theorem}
+
+\end{document}
