@@ -70,7 +70,7 @@
 \subsection{}
 
 \begin{theorem} \label{thm:2a-1}
-    Let \(T\) be a binary tree with \(h(T) > 0\), where \(h\) is the height of the tree.
+    Let \(T\) be a binary tree with \(h(T) > 0\), where \(h\) is the height function.
     Then, let \(r\) be the root with left and right branches \(u, v\), respectively.
     Removing \(r\) results in two new binary trees \(L, R\) with respective roots \(u, v\).
 \end{theorem}
@@ -85,5 +85,53 @@
     \end{equation}
     where \(T, L, R\) are as defined in \autoref{thm:2a-1}.
 \end{theorem}
+\begin{proof}
+    When removing \(r\), the height of the tree is reduced by \(1\).
+    Then, either \(L, R\) will terminate with a greater or equal height.
+    Reversing this process leads to the equation defined in the theorem.
+\end{proof}
+
+\subsection{}
+
+\begin{theorem} \label{thm:2c}
+    The maximum number of vertices in a binary tree with height \(h\) is \(2^{h + 1} - 1\).
+\end{theorem}
+\begin{proof}
+    The series describing the sum of vertices at each height is
+    \begin{equation}
+        v(h) = \sum_{i = 0}^h 2^k
+    \end{equation}
+    which can be proved inductively.
+    Then, using the formula for the sum of a finite geometric series,
+    \begin{equation}
+        v(h) = \frac{1 - 2^{h + 1}}{1 - 2} = -(1 - 2^{h + 1}) = 2^{h + 1} - 1
+    \end{equation}
+\end{proof}
+
+\subsection{}
+
+\begin{theorem}
+    A binary tree with \(n\) leaves has \(2n - 1\) vertices.
+\end{theorem}
+\begin{proof}
+    Observe that \(h = \log_2(n)\).
+    Then, using \autoref{thm:2c},
+    \begin{equation}
+        v(n) = 2 \cdot 2^{\log_2(n)} - 1 = 2n - 1
+    \end{equation}
+\end{proof}
+
+\section{Proofs in Graphs}
+
+\subsection{}
+
+\begin{theorem}
+    Given a connected directed graph with \(n \geqslant 2\) vertices, a path connecting two nodes is no longer than \(2\).
+\end{theorem}
+\begin{proof}
+    Base case: \(n = 2\) means there is a path of length \(1\) connecting the two vertices.
+    Inductive step: A connected directed graph with \(k\) vertices has a path no longer than \(2\).
+    Suppose a graph with \(k + 1\) vertices.
+\end{proof}
 
 \end{document}
