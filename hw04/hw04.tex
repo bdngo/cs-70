@@ -1,0 +1,128 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb, amsfonts, amsthm}
+\usepackage{cancel}
+\usepackage[output-complex-root=j]{siunitx}
+\usepackage[american, nooldvoltagedirection]{circuitikz}
+\usepackage{bm}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{fullpage}
+\usepackage{hyperref}
+
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\thesubsection}{\thesection.\alph{subsection}}
+\renewcommand{\thesubsubsection}{\thesubsection.\roman{subsubsection}}
+
+\newtheorem{theorem}{Theorem}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\renewcommand{\C}{\mathbb{C}}
+\newcommand{\unit}[1]{\bm{\hat{#1}}}
+\newcommand{\iprod}[2]{\left\langle #1, #2 \right\rangle}
+\newcommand{\tpose}[1]{\left[#1\right]^{\! \top} \!\!}
+\newcommand{\diff}[1]{\frac{d}{d #1}}
+
+\lstset{
+    language=Python,
+    tabsize=4,
+    basicstyle=\ttfamily,
+    numbers=left,
+    numberstyle=\ttfamily,
+    keywordstyle=\color{blue},
+    frame=single
+}
+
+\title{CS 70 HW04}
+\author{Bryan Ngo}
+\date{2020-09-22}
+
+\begin{document}
+
+\maketitle
+
+\section{Fibonacci GCD}
+
+\begin{theorem}
+    For all \(n \geqslant 0\), \(\gcd(F_n, F_{n - 1}) = 1\), where \(F_n\) is the \(n\)-th Fibonacci number.
+\end{theorem}
+\begin{proof}
+    Base case: \(\gcd(F_1, F_0) = 1\).
+    Inductive hypothesis: For all \(k \geqslant 0\), \(\gcd(F_k, F_{k - 1}) = 1\).
+    \begin{equation}
+        \gcd(F_{k + 1}, F_k) = \gcd(F_k + F_{k - 1}, F_k) = \gcd(F_k, (F_k + F_{k - 1}) \bmod F_k) = \underbrace{\gcd(F_k, F_{k - 1})}_{\text{inductive hypothesis}} = 1
+    \end{equation}
+\end{proof}
+
+\section{The Last Digit}
+
+\subsection{}
+
+\begin{align}
+    9k + 5 &\equiv 2k + 1 \pmod{10} \\
+    \Rightarrow 7k &\equiv -4 \equiv 6 \pmod{10}
+\end{align}
+By inspection, we find that the \(3 \equiv 7^{-1} \pmod{10}\).
+Then, \(k = 3 \cdot 6 = 18 \equiv 8 \pmod{10}\).
+
+\subsection{}
+
+\begin{equation}
+    S = \sum_{i = 1}^{19} i!
+\end{equation}
+For all \(n > 4\), \(n! \equiv 0 \pmod{10}\).
+Therefore, we can ignore it.
+With this in mind, \(S^2 \equiv (1! + 2! + 3! + 4!)^2 \equiv 33^2 \equiv 9 \pmod{10}\).
+
+\section{Celebrate and Remember Textiles}
+
+We set up the Chinese remainder theorem system
+\begin{align}
+    x &\equiv 2 \pmod{4} \\
+    x &\equiv 2 \pmod{5} \\
+    x &\equiv 4 \pmod{7}
+\end{align}
+For modulo \(4\),
+\begin{equation}
+    35k \equiv 3k \equiv 2 \pmod{4}
+\end{equation}
+By inspection, we find that \(k = 2\).
+For modulo \(5\),
+\begin{equation}
+    28k \equiv 3k \equiv 2 \pmod{5}
+\end{equation}
+By inspection, we find that \(k = 4\).
+For modulo \(7\),
+\begin{equation}
+    20k \equiv 6k \equiv 4 \pmod{7}
+\end{equation}
+By inspection, we find that \(k = 3\).
+Therefore,
+\begin{equation}
+    x \equiv 35 \cdot 2 + 28 \cdot 4 + 20 \cdot 3 \equiv 242 \equiv 102 \pmod{140}
+\end{equation}
+
+\section{Sparsity of Primes}
+
+\begin{theorem}
+    For any \(k \in \N\), there exists \(k\) consecutive positive integers such that none are prime powers.
+\end{theorem}
+\begin{proof}
+
+\end{proof}
+
+\section{Fermat's Little Theorem}
+
+\begin{theorem}
+    \(42 | n^7 - n, n \in \N\)
+\end{theorem}
+\begin{proof}
+    \begin{align}
+        42 | n^7 - n \implies n^7 - n &\equiv 0 \pmod{42} \\
+        n (n^6 - 1) &\equiv \pmod{}
+    \end{align}
+\end{proof}
+
+\end{document}
