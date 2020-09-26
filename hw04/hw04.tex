@@ -12,8 +12,10 @@
 \renewcommand{\thesection}{\arabic{section}}
 \renewcommand{\thesubsection}{\thesection.\alph{subsection}}
 \renewcommand{\thesubsubsection}{\thesubsection.\roman{subsubsection}}
+\newcommand{\lemmaautorefname}{Lemma}
 
 \newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
 
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\Z}{\mathbb{Z}}
@@ -65,6 +67,7 @@
     \Rightarrow 7k &\equiv -4 \equiv 6 \pmod{10}
 \end{align}
 By inspection, we find that the \(3 \equiv 7^{-1} \pmod{10}\).
+This is because \(3 \cdot 7 = 21 \equiv 0 \pmod{10}\).
 Then, \(k = 3 \cdot 6 = 18 \equiv 8 \pmod{10}\).
 
 \subsection{}
@@ -73,7 +76,11 @@ Then, \(k = 3 \cdot 6 = 18 \equiv 8 \pmod{10}\).
     S = \sum_{i = 1}^{19} i!
 \end{equation}
 For all \(n > 4\), \(n! \equiv 0 \pmod{10}\).
-Therefore, we can ignore it.
+This fact can be trivially proven since \(5! = 120 = 12 \cdot 10\), then every number after that will be a multiple of \(10\).
+Therefore,
+\begin{equation}
+    \sum_{i = 1}^{19} i! = 1! + 2! + 3! + 4! + \sum_{i = 4}^{19} i! \equiv 1! + 2! + 3! + 4! \pmod{10}
+\end{equation}
 With this in mind, \(S^2 \equiv (1! + 2! + 3! + 4!)^2 \equiv 33^2 \equiv 9 \pmod{10}\).
 
 \section{Celebrate and Remember Textiles}
@@ -89,19 +96,22 @@ For modulo \(4\),
     35k \equiv 3k \equiv 2 \pmod{4}
 \end{equation}
 By inspection, we find that \(k = 2\).
+This is because \(3 \cdot 2 = 6 \equiv 2 \pmod{4}\).
 For modulo \(5\),
 \begin{equation}
     28k \equiv 3k \equiv 2 \pmod{5}
 \end{equation}
 By inspection, we find that \(k = 4\).
+This is because \(3 \cdot 4 = 12 \equiv 2 \pmod{5}\).
 For modulo \(7\),
 \begin{equation}
     20k \equiv 6k \equiv 4 \pmod{7}
 \end{equation}
 By inspection, we find that \(k = 3\).
+This is because \(6 \cdot 3 = 18 \equiv 4 \pmod{7}\).
 Therefore,
 \begin{equation}
-    x \equiv 35 \cdot 2 + 28 \cdot 4 + 20 \cdot 3 \equiv 242 \equiv 102 \pmod{140}
+    x \equiv 35 \cdot 2 + 28 \cdot 4 + 20 \cdot 3 = 242 \equiv 102 \pmod{140}
 \end{equation}
 
 \section{Sparsity of Primes}
@@ -110,7 +120,19 @@ Therefore,
     For any \(k \in \N\), there exists \(k\) consecutive positive integers such that none are prime powers.
 \end{theorem}
 \begin{proof}
-
+    Consider the set \(\{p_1, p_2, \ldots, p_{2k}\}\), or the set of prime numbers of length \(2k\).
+    Let \(x\) be some non-prime power natural number.
+    By definition, not being a prime power necessarily means that it is the product of at least two distinct primes.
+    Then, the proof necessitates the modular system of equations
+    \begin{align}
+        x &\equiv 0 \pmod{p_1 p_2} \\
+        x + 1 &\equiv 0 \pmod{p_3 p_4} &&\implies x \equiv -1 \pmod{p_3 p_4} \\
+        x + 2 &\equiv 0 \pmod{p_5 p_6} &&\implies x \equiv -2 \pmod{p_5 p_6} \\
+       &\vdots &&\vdots \\
+        x + (k - 1) &\equiv 0 \pmod{p_{2n - 1} p_{2n}} &&\implies x \equiv -(k - 1) \pmod{p_{2n - 1} p_{2n}}
+    \end{align}
+    be true, since this defines a length \(k\) streak of consecutive non-prime power integers.
+    Since the product of two primes is always coprime with any other product of two primes, we can use the Chinese remainder theorem to verify that there exists a solution \(x\) that satisfies the above.
 \end{proof}
 
 \section{Fermat's Little Theorem}
@@ -121,8 +143,52 @@ Therefore,
 \begin{proof}
     \begin{align}
         42 | n^7 - n \implies n^7 - n &\equiv 0 \pmod{42} \\
-        n (n^6 - 1) &\equiv \pmod{}
+        n^7 &\equiv n \pmod{6 \cdot 7}
     \end{align}
+    \begin{lemma}
+        If \(x \equiv a \pmod{n}\), with \(a < n\), then \(x \equiv a \pmod{b n}\), where \(b \in \N\), and \(x\) being unique.
+    \end{lemma} \label{thm:5-flt}
+    \begin{proof}
+        \begin{align}
+            x \equiv a \pmod{n} \implies x &= a + nk \\
+            &\equiv a + bnk \pmod{n} \\
+            &= a + (bn)k \equiv a \pmod{bn}
+        \end{align}
+    \end{proof}
+    This means if \(n^7 \equiv n \pmod{7}\), which is guaranteed by the variant of Fermat's Little Theorem, then \(n^7 \equiv n \pmod{42}\) by \autoref{thm:5-flt}, where \(x = n^7, a = n, b = 6\).
 \end{proof}
+
+\section{A Taste of RSA}
+
+\begin{theorem}
+    \(a^{(p - 1)(q - 1) + 1} \equiv a \pmod{N}\), for primes \(p, q, N = pq, a \in \N\) such that \(\gcd(a, N) = 1\).
+\end{theorem}
+\begin{proof}
+    Consider \(a^{(p - 1)(q - 1) + 1} \pmod{p}\) and \(a^{(p - 1)(q - 1) + 1} \pmod{q}\).
+    By Fermat's Little Theorem,
+    \begin{align}
+        a^{(p - 1)(q - 1)} \cdot \cancel{a} &\equiv \cancel{a} \pmod{p} \\
+        (a^{(p - 1)})^{(q - 1)} \equiv 1^{(q - 1)} &\equiv 1 \pmod{p}
+    \end{align}
+    By similar argument,
+    \begin{align}
+        a^{(p - 1)(q - 1)} \cdot \cancel{a} &\equiv \cancel{a} \pmod{q} \\
+        (a^{(q - 1)})^{(p - 1)} \equiv 1^{(p - 1)} &\equiv 1 \pmod{q}
+    \end{align}
+    By construction, \(p, q\) are prime, and thus are coprime.
+    Therefore, by the Chinese remainder theorem, there exists a unique solution such that
+    \begin{equation}
+        a^{(p - 1)(q - 1)} \equiv 1 \pmod{pq}
+    \end{equation}
+    Multiplying by \(a\) on both sides yields the original statement.
+\end{proof}
+
+\section{Sundry}
+
+I did homework with:
+\begin{itemize}
+    \item Manny Fuentes \href{mailto:mfuentes@berkeley.edu}{mfuentes@berkeley.edu}
+    \item Avery Perez \href{mailto:aj_perez@berkeley.edu}{aj\_perez@berkeley.edu}
+\end{itemize}
 
 \end{document}
