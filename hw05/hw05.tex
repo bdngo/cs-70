@@ -1,0 +1,110 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb, amsfonts, amsthm}
+\usepackage{cancel}
+\usepackage[output-complex-root=j]{siunitx}
+\usepackage[american, nooldvoltagedirection]{circuitikz}
+\usepackage{bm}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{fullpage}
+\usepackage{hyperref}
+
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\thesubsection}{\thesection.\alph{subsection}}
+\renewcommand{\thesubsubsection}{\thesubsection.\roman{subsubsection}}
+
+\newtheorem{theorem}{Theorem}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\renewcommand{\C}{\mathbb{C}}
+\newcommand{\unit}[1]{\bm{\hat{#1}}}
+\newcommand{\iprod}[2]{\left\langle #1, #2 \right\rangle}
+\newcommand{\tpose}[1]{\left[#1\right]^{\! \top} \!\!}
+\newcommand{\diff}[1]{\frac{d}{d #1}}
+
+\lstset{
+    language=Python,
+    tabsize=4,
+    basicstyle=\ttfamily,
+    numbers=left,
+    numberstyle=\ttfamily,
+    keywordstyle=\color{blue},
+    frame=single
+}
+
+\title{CS 70 HW05}
+\author{Bryan Ngo}
+\date{2020-09-28}
+
+\begin{document}
+
+\maketitle
+
+\section{RSA with Just One Prime}
+
+\subsection{}
+
+\begin{theorem}
+    RSA with one prime is cryptographically correct, or
+    \begin{equation}
+        x^{ed} \equiv x \pmod{p}
+    \end{equation}
+\end{theorem}
+\begin{proof}
+    By construction, we can represent \(ed\) as
+    \begin{equation}
+        ed = k(p - 1) + 1
+    \end{equation}
+    for some \(k \in \Z\).
+    Then,
+    \begin{align}
+        x^{k(p - 1) + 1} &\equiv x \pmod{p} \\
+        x^{k(p - 1)} &\equiv 1 \pmod{p} \\
+        (x^{p - 1})^k \equiv 1^k &\equiv 1 \pmod{p}
+    \end{align}
+    where the last step follows from Fermat's Little Theorem, which is valid since \(\gcd(x, p) = 1\).
+\end{proof}
+
+\subsection{}
+
+Eve can use the extended GCD algorithm to recover \(d\).
+Since \(\gcd(e, p - 1) = 1\), the extended GCD is guaranteed to find the inverse of \(e \pmod{p - 1}\).
+Since extended GCD has a worst-case runtime of \(O(n)\), where \(n\) is the number of bits, meaning that at worst Eve has to run the algorithm \(1024\) iterations.
+
+\subsection{}
+
+In order to recover \(x\), Eve would
+\begin{enumerate}
+    \item Calculate \(d\) through the calculation outlined in the previous problem.
+    \item Simply perform the operation \(D(y)\) to recover \(x\).
+\end{enumerate}
+
+\subsection{}
+
+Yes, this is possible because the main difficulty of RSA is that \(N = pq\) is infeasibly difficult to recover \(p, q\) from, since \(d, e\) are calculated modulo \((p - 1) (q - 1)\).
+Since \(N = p\), we only need to subtract \(1\) in order to start regenerating the keys.
+At most, as explained in previous problems, Eve only needs \(1024\) iterations of the extended GCD \emph{at most} to break "RSA", which is quite trivial.
+
+\section{Squared RSA}
+
+\begin{theorem}
+    Given coprime \(a, p\) where \(p\) is prime,
+    \begin{equation}
+        a^{p (p - 1)} \equiv 1 \pmod{p^2}
+    \end{equation}
+\end{theorem}
+\begin{proof}
+    Consider the finite field \(S = \mathbb{F}_{p^2} \setminus \{0\} = \{1, 2, \ldots, p^2 - 1\}\).
+    Since \(\gcd(a, p) = 1\), the set \(S' = \{a, 2a, \ldots, a (p^2 - 1)\}\) is bijective to \(\mathbb{F}_{p^2}\).
+    % TODO: modify set
+    Then, consider the product of all elements in \(S\) and \(S'\),
+    \begin{align}
+        \prod_{i = 1}^{p^2 - 1} a i &\equiv \prod_{i = 1}^{p^2 - 1} i \pmod{p^2} \\
+        a^{p^2 - 1} \cancel{\prod_{i = 1}^{p^2 - 1} i} &\equiv \cancel{\prod_{i = 1}^{p^2 - 1} i} \pmod{p^2}
+    \end{align}
+\end{proof}
+
+\end{document}
