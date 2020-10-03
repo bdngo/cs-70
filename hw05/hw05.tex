@@ -12,8 +12,10 @@
 \renewcommand{\thesection}{\arabic{section}}
 \renewcommand{\thesubsection}{\thesection.\alph{subsection}}
 \renewcommand{\thesubsubsection}{\thesubsection.\roman{subsubsection}}
+\newcommand{\lemmaautorefname}{Lemma}
 
 \newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
 
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\Z}{\mathbb{Z}}
@@ -90,21 +92,80 @@ At most, as explained in previous problems, Eve only needs \(1024\) iterations o
 
 \section{Squared RSA}
 
-\begin{theorem}
+\subsection{}
+
+\begin{theorem} \label{thm:2a}
     Given coprime \(a, p\) where \(p\) is prime,
     \begin{equation}
         a^{p (p - 1)} \equiv 1 \pmod{p^2}
     \end{equation}
 \end{theorem}
 \begin{proof}
-    Consider the finite field \(S = \mathbb{F}_{p^2} \setminus \{0\} = \{1, 2, \ldots, p^2 - 1\}\).
-    Since \(\gcd(a, p) = 1\), the set \(S' = \{a, 2a, \ldots, a (p^2 - 1)\}\) is bijective to \(\mathbb{F}_{p^2}\).
-    % TODO: modify set
-    Then, consider the product of all elements in \(S\) and \(S'\),
+    Consider the finite field \(\mathbb{F}_{p^2} = \{1, 2, \ldots, p^2 - 1\}\), \emph{excluding} every \(f \in \mathbb{F}_{p^2}\) such that \(\gcd(f, p^2) \neq 1\).
+    This means that
+    \begin{equation}
+        S = \{1, 2, \ldots, p - 1, p + 1, \ldots, p^2 - 1\}
+    \end{equation}
+    Since \(\gcd(a, p) = 1\), the set \(S' = \{a \cdot s | s \in S\}\) is bijective to \(S\).
+    Note that \(|S| = |S'| = p^2 - (p - 1) - 1 = p^2 - p\), since we have effectively excluded \(p - 1\) elements from \(\mathbb{F}_{p^2}\) when constructing \(S\), i.e. every \(k \in [1, p - 1]\).
+    Then, consider the product of all elements in \(S\) and \(S'\) modulo \(p^2\),
     \begin{align}
-        \prod_{i = 1}^{p^2 - 1} a i &\equiv \prod_{i = 1}^{p^2 - 1} i \pmod{p^2} \\
-        a^{p^2 - 1} \cancel{\prod_{i = 1}^{p^2 - 1} i} &\equiv \cancel{\prod_{i = 1}^{p^2 - 1} i} \pmod{p^2}
+        \prod_{i = 1}^{p^2 - p} a s_i &\equiv \prod_{i = 1}^{p^2 - p} s_i \pmod{p^2} \\
+        a^{p^2 - p} \cancel{\prod_{i = 1}^{p^2 - p} s_i} &\equiv \cancel{\prod_{i = 1}^{p^2 - p} s_i} \pmod{p^2} \\
+        a^{p (p - 1)} &\equiv 1 \pmod{p^2}
     \end{align}
 \end{proof}
+
+\subsection{}
+
+\begin{theorem}
+    The RSA scheme where \(N = p^2 q^2\) for prime \(p, q\) is correct; that is,
+    \begin{equation}
+        x^{ed} \equiv x \pmod{N}
+    \end{equation}
+    for \(x\) coprime to \(p, q\) and private and public keys \(e, d\).
+\end{theorem}
+\begin{proof}
+    We can represent \(ed\) as
+    \begin{equation}
+        ed = k p(p - 1) q(q - 1) + 1
+    \end{equation}
+    for \(k \in \Z\).
+    Thus,
+    \begin{align}
+        x^{k p(p - 1) q(q - 1) + 1} &\equiv x \pmod{p^2 q^2} \\
+        \Rightarrow x (x^{k p(p - 1) q(q - 1)} - 1) &\equiv 0 \pmod{p^2 q^2}
+    \end{align}
+    To prove this, consider the lemma
+    \begin{lemma} \label{thm:2b}
+        \begin{equation}
+            x (x^{k p(p - 1) q(q - 1)} - 1) \equiv 0 \pmod{p^2}
+        \end{equation}
+    \end{lemma}
+    \begin{proof}
+        \begin{align}
+            x (x^{k p(p - 1) q(q - 1)} - 1) &\equiv 0 \pmod{p^2} \\
+            x \left((x^{p(p - 1)})^{k q(q - 1)} - 1\right) &\equiv x (1^{k q(q - 1)} - 1) \equiv 0 \pmod{p^2} \\
+            &\equiv 0 \pmod{p^2}
+        \end{align}
+        where we use \autoref{thm:2a} to reduce the system.
+    \end{proof}
+    Using \autoref{thm:2b}, we prove the case for \(p^2\).
+    Without loss of generality, we can prove a similar case for \(q^2\).
+    Since the term is divisible by both \(p^2, q^2\), it must also be divisible by \(N = p^2 q^2\).
+\end{proof}
+
+\section{The CRT and Lagrage Interpolation}
+
+\subsection{}
+
+\begin{theorem}
+    Given the modular system of equations
+    \begin{align}
+        x &\equiv a_1 \pmod{n_1} \\
+        x &\equiv a_2 \pmod{n_2}
+    \end{align}
+    there exists a solution \(x_1\) for \(a_1 = 1, a_2 = 0\).
+\end{theorem}
 
 \end{document}
