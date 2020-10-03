@@ -72,7 +72,7 @@
 
 \subsection{}
 
-Eve can use the extended GCD algorithm to recover \(d\).
+Eve can use the extended GCD algorithm to recover \(d\), essentially brute-forcing.
 Since \(\gcd(e, p - 1) = 1\), the extended GCD is guaranteed to find the inverse of \(e \pmod{p - 1}\).
 Since extended GCD has a worst-case runtime of \(O(n)\), where \(n\) is the number of bits, meaning that at worst Eve has to run the algorithm \(1024\) iterations.
 
@@ -83,6 +83,7 @@ In order to recover \(x\), Eve would
     \item Calculate \(d\) through the calculation outlined in the previous problem.
     \item Simply perform the operation \(D(y)\) to recover \(x\).
 \end{enumerate}
+This takes constant time since Eve has presumably already recovered \(d\) and the modulo operation is constant time.
 
 \subsection{}
 
@@ -155,7 +156,7 @@ At most, as explained in previous problems, Eve only needs \(1024\) iterations o
     Since the term is divisible by both \(p^2, q^2\), it must also be divisible by \(N = p^2 q^2\).
 \end{proof}
 
-\section{The CRT and Lagrage Interpolation}
+\section{The CRT and Lagrange Interpolation}
 
 \subsection{}
 
@@ -167,5 +168,209 @@ At most, as explained in previous problems, Eve only needs \(1024\) iterations o
     \end{align}
     there exists a solution \(x_1\) for \(a_1 = 1, a_2 = 0\).
 \end{theorem}
+\begin{proof}
+    Since \(a_2 \equiv 0 \pmod{n_2}\), \(x_1 = k_2 n_2\) for some \(k_2 \in \Z\).
+    Then, since \(a_1 \equiv 1 \pmod{n_1}\),
+    \begin{equation}
+        k_2 n_2 \equiv 1 \pmod{n_1}
+    \end{equation}
+    Then, by \href{https://www.eecs70.org/static/notes/n6.pdf}{Theorem 6.2}, since \(\gcd(n_2, n_1) = 1\) by definition, there \emph{must} exist some \(k_2\) satisfying this.
+    Therefore, there exists some \(x_1\) satisfying the equation.
+\end{proof}
+\begin{theorem}
+    Given the modular system of equations
+    \begin{align}
+        x &\equiv a_1 \pmod{n_1} \\
+        x &\equiv a_2 \pmod{n_2}
+    \end{align}
+    there exists a solution \(x_2\) for \(a_1 = 0, a_2 = 2\).
+\end{theorem}
+\begin{proof}
+    Since \(a_1 \equiv 0 \pmod{n_1}\), \(x_1 = k_1 n_1\) for some \(k_1 \in \Z\).
+    Then, since \(a_2 \equiv 1 \pmod{n_2}\),
+    \begin{equation}
+        k_1 n_1 \equiv 1 \pmod{n_2}
+    \end{equation}
+    Then, by \href{https://www.eecs70.org/static/notes/n6.pdf}{Theorem 6.2}, since \(\gcd(n_2, n_1) = 1\) by definition, there \emph{must} exist some \(k_1\) satisfying this.
+    Therefore, there exists some \(x_2\) satisfying the equation.
+\end{proof}
+
+\subsection{}
+
+\begin{theorem}
+    Given the modular system of equations
+    \begin{align}
+        x &\equiv a_1 \pmod{n_1} \\
+        x &\equiv a_2 \pmod{n_2}
+    \end{align}
+    there exists a solution \(x\) for any \(a_1, a_2\) which are all equivalent modulo \(n_1 n_2\).
+\end{theorem}
+\begin{proof}
+    Since we've proven that there exists some \(k \in \Z\) solving
+    \begin{equation}
+        k n_2 \equiv 1 \pmod{n_1}
+    \end{equation}
+    we can simply multiply by any natural \(a \in [1, n_1 - 1]\) to obtain any solution modulo \(n_1\).
+    Without loss of generality, this also applies modulo \(n_2\).
+    Then, our solution \(x\) is
+    \begin{equation}
+        x = a_2 k_1 n_1 + a_1 k_2 n_2
+    \end{equation}
+    which is identically equivalent up to modulo \(n_1 n_2\) since it is divisible by the individual factors \(n_1, n_2\), so the sum also has a unique solution.
+\end{proof}
+
+\subsection{}
+
+\begin{theorem}
+    Given the modular system of equations
+    \begin{align}
+        x &\equiv a_1 \pmod{n_1} \\
+        x &\equiv a_2 \pmod{n_2} \\
+        &\vdots \\
+        x &\equiv a_k \pmod{n_k}
+    \end{align}
+    there exists a solution \(x\) for any \(a_{1, 2, \ldots, k}\) which is unique modulo \(\prod_{i = 1}^k n_i\).
+\end{theorem}
+\begin{proof}
+    Base case: See the above subproblem.
+    Inductive hypothesis: CRT holds for \(i\) equations.
+    For \(i + 1\) equations, since CRT hold for the previous \(i\) equations, then
+    \begin{equation}
+        k_i \prod_{j = 1, j \neq i + 1}^i n_j \equiv 1 \pmod{n_{i + 1}}
+    \end{equation}
+    Then, since by definition \(\gcd(n_i, n_{i + 1}) = 1\), there must exist some \(k_i\) that is the modular inverse.
+    Then, we can also multiply by any \(a_j \in [1, n_{i + 1} - 1]\) to obtain any distinct number modulo \(n_{i + 1}\).
+    So our solution is
+    \begin{equation}
+        x = \sum_{j = 1, j \neq i}^{i + 1} a_j k_j n_j
+    \end{equation}
+    Since there is a bijective mapping between unknowns and moduli, the solution is unique.
+\end{proof}
+
+\subsection{}
+
+\begin{theorem}
+    The modular system of equations
+    \begin{align}
+        p(x) &\equiv y_1 \pmod{(x - x_1)} \\
+        p(x) &\equiv y_2 \pmod{(x - x_2)} \\
+        &\vdots \\
+        p(x) &\equiv y_k \pmod{(x - x_k)}
+    \end{align}
+    has a unique solution modulo \(\prod_{i = 1}^k (x - x_i)\).
+\end{theorem}
+\begin{proof}
+    Since \(\gcd(x_i, x_j) = 1\), \(\gcd(x - x_i, x - x_j) = 1\).
+    This means that all the moduli are coprime, since the only degree one factor they could share is themselves.
+    Thus, we can use the Chinese remainder theorem to prove that there exists some \(p(x)\) modulo the product of all the basis binomials.
+\end{proof}
+We can invoke Lagrange interpolation by solving the system.
+For some modulus \(x - x_i\), we construct some \(\Delta_i(x)\) such that
+\begin{equation}
+    \Delta_i(x) = a_i \prod_{j = 1, j \neq i}^i (x - x_j) \equiv y_i \pmod{(x - x_i)}
+\end{equation}
+We can simply find the modular inverse of \(\prod_{j = 1, j \neq i}^i (x - x_j)\) modulo \(x - x_i\), the multiply by \(y_i\) to obtain \(\Delta_i(x)\).
+Our solution \(p(x)\) is thus
+\begin{equation}
+    p(x) = \sum_{i = 1}^k y_i \Delta_i(k)
+\end{equation}
+
+\section{Polynomials in Fields}
+
+\subsection{}
+
+\begin{theorem}
+    \begin{equation}
+        P_n(7) \equiv 0 \pmod{19}
+    \end{equation}
+    for some \(n \in \N\) and \(P_n(x)\) is defined as
+    \begin{equation}
+        P_n(x) =
+        \begin{cases}
+            x + 12 & n = 0 \\
+            x^2 - 5x + 5 & n = 1 \\
+            x P_{n - 2}(x) - P_{n - 1}(x) & \textnormal{otherwise}
+        \end{cases}
+    \end{equation}
+\end{theorem}
+\begin{proof}
+    Base case:
+    \begin{align}
+        P_0(7) = 7 + 12 = 19 &\equiv 0 \pmod{19} \\
+        P_1(7) = 49 - 35 + 5 = 19 &\equiv 0 \pmod{19}
+    \end{align}
+    Inductive hypothesis: \(P_k(7) \equiv 0 \pmod{19}\).
+    \begin{align}
+        P_{k + 1}(7) = 7P_{k - 1} - P_k(7)
+    \end{align}
+    By strong induction, all cases between the base case and the inductive step satisfy the hypothesis, so we have
+    \begin{equation}
+        7P_{k - 1} - P_k(7) = 7 \cdot 19k_1 - 19k_2 = 19(7k_1 - k_2) \equiv 0 \pmod{19}
+    \end{equation}
+    for some \(k_1, k_2 \in \Z\).
+\end{proof}
+
+\subsection{}
+
+\begin{theorem}
+    For all prime \(q\), if \(P_{2017}(x) \not\equiv 0 \pmod{q}\), then \(P_{2017}(x)\) has at most \(2017\) roots modulo \(q\).
+\end{theorem}
+\begin{proof}
+    Using induction on the degree of \(P_n(x)\),
+    \begin{lemma}
+        \begin{equation}
+            \deg(P_n(x)) \leqslant n + 1
+        \end{equation}
+    \end{lemma}
+    \begin{proof}
+        Base case: \(\deg(P_0(x)) = 1\), \(\deg(P_1(x)) = 2\).
+        Inductive hypothesis: \(\deg(P_k(x)) = k + 1\).
+        \begin{equation}
+            P_{k + 1}(x) = x P_{k - 1}(x) - P_k(x)
+        \end{equation}
+        By strong induction,
+        \begin{align}
+            \deg(x P_{k - 1}(x) - P_k(x)) &\leqslant \max\{\deg(x P_{k - 1}(x)), \deg(P_k(x))\} \\
+            \deg(x P_{k - 1}(x)) &= k + 1 \\
+            \Rightarrow \deg(x P_{k - 1}(x) - P_k(x)) &\leqslant \max\{k + 1, k + 1\} = k + 2
+        \end{align}
+    \end{proof}
+    By the fundamental theorem of algebra, the theorem holds.
+\end{proof}
+
+\section{Secrets in the United Nations}
+
+\subsection{}
+
+The number of keys required is as follows:
+\begin{itemize}
+    \item \(193\) keys for each country.
+    \item \(193 - 55 = 138\) keys for the Secretary General since only he and \(55\) other countries are required to open the vault.
+\end{itemize}
+which means that there will be a total of \(331\) unique keys distributed.
+By the properties of the Shamir Secret Sharing Scheme outlined in \href{https://www.eecs70.org/static/notes/n8.pdf}{Note 8}, we require a polynomial of degree \(192\) because only \(193\) unique keys are required to open the vault.
+
+\subsection{}
+
+The only modification we need to make is after generating our keys for the degree \(192\) polynomial for each country, encode their secret \(s = (i, P(i))\) as the solution to a new degree \(11\) polynomial, then distribute \emph{those} keys to each representative.
+
+\section{Secret Sharing with Spies}
+
+The scheme is as follows, where \(s\) is the number of spies:
+\begin{itemize}
+    \item The number of keys required to decrypt the secret is \(s + 1 = 4\), so the spies cannot decrypt it themselves.
+    \item If we divide the \(M\) troops into groups of \(4\), assume the worst case scenario where one spy is in each group, meaning they sabotage \(3\) groups
+    Then, we implement a majority vote system where if \(s + 1\) groups decrypt the secret, then the secret is decrypted.
+    This means that there must be \(7\) groups of \(4\) at minimum, so \(M \geqslant 28\).
+    For any \(M < 28\), you run the risk of the spies sabotaging at least half of the groups, failing to decrypt the secret.
+    For example, if \(M = 24\), the spies could sabotage at most \(\frac{1}{2}\) of the groups.
+\end{itemize}
+
+\section{Sundry}
+
+I worked with
+\begin{itemize}
+    \item Victor Zhang \href{mailto:vzhang6@berkeley.edu}{vzhang6@berkeley.edu}
+\end{itemize}
 
 \end{document}
