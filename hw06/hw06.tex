@@ -1,0 +1,319 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb, amsfonts, amsthm}
+\usepackage{cancel}
+\usepackage[binary-units=true, output-complex-root=j]{siunitx}
+\usepackage[american, nooldvoltagedirection]{circuitikz}
+\usepackage{bm}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{fullpage}
+\usepackage{hyperref}
+
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\thesubsection}{\thesection.\alph{subsection}}
+\renewcommand{\thesubsubsection}{\thesubsection.\roman{subsubsection}}
+\newcommand{\lemmaautorefname}{Lemma}
+\renewcommand{\labelenumi}{\alph{enumi}.}
+\renewcommand{\labelenumii}{\roman{enumii}.}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\renewcommand{\C}{\mathbb{C}}
+\newcommand{\unit}[1]{\bm{\hat{#1}}}
+\newcommand{\iprod}[2]{\left\langle #1, #2 \right\rangle}
+\newcommand{\tpose}[1]{\left[#1\right]^{\! \top} \!\!}
+\newcommand{\diff}[1]{\frac{d}{d #1}}
+
+\lstset{
+    language=Python,
+    tabsize=4,
+    basicstyle=\ttfamily,
+    numbers=left,
+    numberstyle=\ttfamily,
+    keywordstyle=\color{blue},
+    frame=single
+}
+
+\title{CS 70 HW06}
+\author{Bryan Ngo}
+\date{2020-10-09}
+
+\begin{document}
+
+\maketitle
+
+\section{Exam Policy and Practice}
+
+\begin{enumerate}
+    \item \begin{enumerate}
+        \item \SI{20}{\minute}
+        \item You are allowed to record locally, with about \(\SI{220}{\mega\byte\per\hour} \cdot \SI{2}{\hour} = \SI{440}{\mega\byte}\) required.
+        \item Either fill out the Exam Disruption Form or make a private post on Piazza.
+    \end{enumerate}
+    \item The magic word is \textbf{Signature}.
+\end{enumerate}
+
+\section{Message is Too Noisy}
+
+\subsection{}
+
+\begin{align}
+    \Delta_0(x) &= \frac{(x - 1) (x - 2)}{(0 - 1) (0 - 2)} = \frac{(x - 1) (x - 2)}{2} \equiv 9 (x - 1) (x - 2) \pmod{17} \\
+    \Delta_1(x) &= \frac{x (x - 2)}{1 (1 - 2)} \\
+    \Delta_2(x) &= \frac{x (x - 1)}{2 (2 - 1)} \\
+    P(x) &= 0 \Delta_0(x) + 1 \Delta_1(x) + 4 \Delta_2(x) = -x^2 + 2x + 2x^2 - 2x = x^2
+\end{align}
+
+\subsection{}
+
+The total packets are \((0, 1, 4, 9, 0)\).
+Then, our \(Q(x) = a_0 + a_1 x + a_2 x^2 + a_3 x^3\), so
+\begin{align}
+    a_0 &\equiv 0 \pmod{17} \\
+    a_0 + a_1 + a_2 + a_3 + e_0 &\equiv 1 \pmod{17} \\
+    a_0 + 2 a_1 + 4 a_2 + 8 a_3 + 4 e_0 &\equiv 8 \pmod{17} \\
+    a_0 + 3 a_1 + 9 a_2 + 27 a_3 + 9 e_0 &\equiv 27 \pmod{17} \\
+    a_0 + 4 a_1 + 16 a_2 + 64 a_3 &\equiv 0 \pmod{17} \\
+    \Rightarrow
+    \begin{bmatrix}
+        1 & 0 & 0 & 0 & 0 \\
+        1 & 1 & 1 & 1 & 1 \\
+        1 & 2 & 4 & 8 & 4 \\
+        1 & 3 & 9 & 27 & 9 \\
+        1 & 4 & 16 & 64 & 0
+    \end{bmatrix}
+    \begin{bmatrix}
+        a_0 \\
+        a_1 \\
+        a_2 \\
+        a_3 \\
+        e_0
+    \end{bmatrix}
+    &\equiv
+    \begin{bmatrix}
+        0 \\
+        1 \\
+        8 \\
+        27 \\
+        0
+    \end{bmatrix} \pmod{17} \\
+    \Rightarrow
+    \begin{bmatrix}
+        a_0 \\
+        a_1 \\
+        a_2 \\
+        a_3 \\
+        e_0
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        0 \\
+        0 \\
+        -4
+        1 \\
+        4
+    \end{bmatrix}
+\end{align}
+So our solutions are
+\begin{align}
+    Q(x) &= x^3 - 4x^2 = x^2 (x - 4) \\
+    E(x) &= x - 4 \\
+    P(x) &= \frac{Q(x)}{E(x)} = x^2
+\end{align}
+
+\subsection{}
+
+The total packets are \((0, 1, 4, 9, 0)\).
+Then, our \(Q(x) = a_0 + a_1 x + a_2 x^2 + a_3 x^3\), so
+\begin{align}
+    a_0 &\equiv 0 \pmod{17} \\
+    a_0 + a_1 + a_2 + a_3 + e_0 &\equiv 1 \pmod{17} \\
+    a_0 + 2 a_1 + 4 a_2 + 8 a_3 + 4 e_0 &\equiv 8 \pmod{17} \\
+    a_0 + 3 a_1 + 9 a_2 + 27 a_3 + 6 e_0 &\equiv 18 \pmod{17} \\
+    a_0 + 4 a_1 + 16 a_2 + 64 a_3 + 8 e_0 &\equiv 32 \pmod{17} \\
+    \Rightarrow
+    \begin{bmatrix}
+        1 & 0 & 0 & 0 & 0 \\
+        1 & 1 & 1 & 1 & 1 \\
+        1 & 2 & 4 & 8 & 4 \\
+        1 & 3 & 9 & 27 & 6 \\
+        1 & 4 & 16 & 64 & 8
+    \end{bmatrix}
+    \begin{bmatrix}
+        a_0 \\
+        a_1 \\
+        a_2 \\
+        a_3 \\
+        e_0
+    \end{bmatrix}
+    &\equiv
+    \begin{bmatrix}
+        0 \\
+        1 \\
+        8 \\
+        18 \\
+        32 
+    \end{bmatrix} \pmod{17} \\
+    \Rightarrow
+    \begin{bmatrix}
+        a_0 \\
+        a_1 \\
+        a_2 \\
+        a_3 \\
+        e_0
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        0 \\
+        0 \\
+        -4
+        1 \\
+        4
+    \end{bmatrix}
+\end{align}
+So our "solutions" are
+\begin{align}
+    Q(x) &= 2x^2 - 2x = 2x (x - 1) \\
+    E(x) &= x - 1 \\
+    P(x) &= \frac{Q(x)}{E(x)} = 2x \\
+    (P(0), P(1), P(2)) &= (0, 2, 4) \neq (0, 1, 4)
+\end{align}
+
+\subsection{}
+
+\begin{theorem}
+    The Hamming distance between two Reed-Solomon codes \(RS[5, 3]\) is at least \(3\).
+\end{theorem}
+\begin{proof}
+    Assume that the Hamming distance between two codes in \(RS[5, 3]\) is \(< 3\).
+    Assign the vectors \(\bm{c}_a \neq \bm{c}_b\) to be associated with polynomials \(P_a(x), P_b(x)\).
+    By construction, \(\deg\{P_a(x)\} = \deg\{P_b(x)\} \leqslant 4\).
+    Since the \(H(\bm{c}_a, \bm{c}_b) < 3\), they must be the same at \(5\) other points since all \(RS[5, 3]\) codes are length \(5\).
+    This means that \(P_a(x) = P_b(x)\) for at least \(5\) points, which means they are identical since they are of degree \(4\).
+    This is a contradiction since we assumed that \(\bm{c}_a \neq \bm{c}_b\).
+\end{proof}
+
+\begin{theorem}
+    The codeword \((1, 1, 3, 7, 13)\) and non-codeword \((1, 1, 4, 7, 13)\) have a smaller Hamming distance than any codeword on \(RS[5, 3]\).
+\end{theorem}
+\begin{proof}
+    By inspection, the Hamming distance is \(1\).
+    Since \((1, 1, 4, 7, 13)\) is not a codeword, the above theorem does not apply.
+    Therefore, all other codewords on \(RS[5, 3]\) have a distance at least \(3 > 1\).
+\end{proof}
+
+\subsection{}
+
+\begin{theorem}
+    On the field \(RS[m, n]\),
+    \begin{equation}
+        H(C', E) = \min_{E' \in RS[m, n]} (H(C', E'))
+    \end{equation}
+    where \(C'\) is the received codeword and \(E\) is the encoded message, and \(H\) is the Hamming distance function.
+\end{theorem}
+\begin{proof}
+    The minimum Hamming distance between any valid codewords is \(m - n + 1\),
+    so
+    \begin{equation}
+        H(C', E) = m - n + 1
+    \end{equation}
+\end{proof}
+
+\section{Linearity}
+
+\begin{theorem}
+    The element-wise sum of two Reed-Solomon codewords is also a Reed-Solomon codeword.
+\end{theorem}
+\begin{proof}
+    Given two polynomials \(p(x), q(x)\) associated with codewords \(\bm{a} = (a_0, a_1, \ldots, a_{n - 1})\) and \(\bm{b} = (b_0, b_1, \ldots, b_{n - 1})\),
+    \begin{align}
+        p(x) &= a_0 + a_1 x + \cdots + a_{n - 1} x^{n - 1} \\
+        q(x) &= b_0 + b_1 x + \cdots + b_{n - 1} x^{n - 1} \\
+        p(x) + q(x) &= (a_0 + b_0) + (a_1 + b_1) x + \cdots + (a_{n - 1} + b_{n - 1}) x^{n - 1} \iff (a_0 + b_0, a_1 + b_1, \ldots, a_{n - 1} + b_{n - 1}) = \bm{a} + \bm{b}
+    \end{align}
+    This is true since the polynomials are closed under addition, so since the degree is preserved, the message length is also preserved, so this is yet another valid Reed-Solomon codeword.
+\end{proof}
+
+\stepcounter{section}
+
+\section{Maze}
+
+\subsection{}
+
+Since there are \(8\) possible paths, the path must consist of exactly \(4\) \(x\)-axis moves and \(4\) \(y\)-axis moves, but since the total number of moves must be \(8\), we can classify this as a problem without replacement without order, so the total number is \(\binom{8}{4} = 70\).
+
+\subsection{}
+
+By construction of the problem, the first move must be an addition to \(x\), and the last move must be an addition to \(y\).
+Therefore, we can reduce the search space to \(\binom{6}{3}\).
+The list of possible rejected points is
+\begin{align}
+    (0, 1) \\
+    (0, 2) \\
+    (0, 3) \\
+    (0, 4) \\
+    (1, 2) \\
+    (1, 3) \\
+    (1, 4) \\
+    (2, 3) \\
+    (2, 4) \\
+    (3, 4) \\
+\end{align}
+The total number of paths is thus \(14\).
+
+\subsection{}
+
+We can imagine a left parenthesis as an \(x\) move and right parenthesis as a \(y\) move, a mismatch corresponds to crossing the line \(y = x\).
+Similarly, the first and last parentheses are pre-determined.
+Thus, the answer is \(70 - 14 = 56\), since we eliminate all the legal moves from the previous question.
+
+\subsection{}
+
+\section{Good Game}
+
+\begin{enumerate}
+    \item Sending the maximum number of GGs means winning the fewest number of times.
+    This means Maru must win the last games since they are worth the most points.
+    The last three games are worth \(10 + 9 + 8 = 27\) points, so that is enough to tie.
+    Maru has to win only one more game, so the max number of GGs is \(10 - 4 = 6\).
+    \item Firstly, the cases \(\binom{10}{10}, \binom{10}{9}, \binom{10}{8}, \binom{10}{7}\) will always work since at worst case \(\sum_{i = 1}^7 i = 28 > 27\).
+    Then, we can exclude \(\binom{10}{0}, \binom{10}{1}, \binom{10}{2}, \binom{10}{3}\) since at best \(10 + 9 + 8 = 27\).
+    Considering \(\binom{10}{5}\), since the amount of games Maru wins or loses is even, if Maru loses some sequence, he wins the inverse of that sequence, so we need only divide by two.
+    Then, considering either \(\binom{10}{6}, \binom{10}{4}\), we can cherry-pick the games Maru wins and combine them into a single sequence, and by the same symmetric argument as above, we can choose either one since \(\binom{10}{6} = \binom{10}{4}\).
+    Therefore, the total combinations of winning games for Maru is \(\binom{10}{6} + \frac{1}{2} \binom{10}{5} + \sum_{i = 7}^{10} \binom{10}{i} = 512\).
+\end{enumerate}
+
+\section{Counting Functions}
+
+\subsection{}
+
+We can interpret this as a stars and bars with only one bar, so we can choose \(k\) items to put in the first bin, so \(n - k\) items must go into the second min.
+Since the order within the bins doesn't matter,
+\begin{equation}
+    g(n) = \sum_{i = 1}^{n - 1} \binom{n}{i}
+\end{equation}
+
+\subsection{}
+
+This problem is left as an exercise to the reader.
+
+\subsection{}
+
+This problem is left as an exercise to the reader.
+
+\section{Sundry}
+
+I did homework with:
+\begin{itemize}
+    \item Manny Fuentes \href{mailto:mfuentes@berkeley.edu}{mfuentes@berkeley.edu}
+    \item Avery Perez \href{mailto:aj_perez@berkeley.edu}{aj\_perez@berkeley.edu}
+    \item Victor Zhang \href{mailto:vzhang6@berkeley.edu}{vzhang6@berkeley.edu}
+    \item Alex Chuang \href{mailto:alexc0413@berkeley.edu}{alexc0413@berkeley.edu}
+\end{itemize}
+
+\end{document}
