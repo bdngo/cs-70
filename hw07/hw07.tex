@@ -1,0 +1,128 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb, amsfonts, amsthm}
+\usepackage{cancel}
+\usepackage[output-complex-root=j]{siunitx}
+\usepackage[american, nooldvoltagedirection]{circuitikz}
+\usepackage{bm}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{fullpage}
+\usepackage{hyperref}
+
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\thesubsection}{\thesection.\alph{subsection}}
+\renewcommand{\thesubsubsection}{\thesubsection.\roman{subsubsection}}
+\newcommand{\lemmaautorefname}{Lemma}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\renewcommand{\C}{\mathbb{C}}
+\newcommand{\unit}[1]{\bm{\hat{#1}}}
+\newcommand{\iprod}[2]{\left\langle #1, #2 \right\rangle}
+\newcommand{\tpose}[1]{\left[#1\right]^{\! \top} \!\!}
+\newcommand{\diff}[1]{\frac{d}{d #1}}
+
+\lstset{
+    language=Python,
+    tabsize=4,
+    basicstyle=\ttfamily,
+    numbers=left,
+    numberstyle=\ttfamily,
+    keywordstyle=\color{blue},
+    frame=single
+}
+
+\title{CS 70 HW 07}
+\author{Bryan Ngo}
+\date{2020-10-15}
+
+\begin{document}
+
+\maketitle
+
+\section{Strings}
+
+Given a string of length \(5\), the number of strings purely containing \(\{A, B, C\}\) is \(3^5 = 243\), since each letter can be either \(\{A, B, C\}\).
+As for the second part, we take a subset of the first part, except we now subtract all possibilities where no more than \(2\) of each character show up, multiplied by each character.
+Then, we have to add back in the cases where they are all the same character, bringing us to \(3^5 - 3 \cdot 2^5 + 3 = 150\).
+
+\section{Palindromes}
+
+Since the middle digit is free, we have \(10\) possibilities for the middle digit.
+Then, we have the other two to choose.
+Since by definition they have to be the same on either side, there will be two of each digit.
+However, the first digit cannot be zero so there are only \(9\) possibilities for the first and last digit.
+Therefore, the final count is \(10 \cdot 10 \cdot 9 = 900\).
+
+\section{Maze in General and Trees Too!!!}
+
+\subsection{}
+
+Since there are \(2n\) possible moves to make, and each axis requires \(n\) moves, the total number is \(\binom{2n}{n}\).
+
+\subsection{}
+
+The total number of possible moves is still \(n - 1 + n + 1 = 2n\).
+However, there is an uneven axis, which means that each axis can either be \(n \pm 1\) moves, bringing us to \(\binom{2n}{n \pm 1}\).
+
+\subsection{}
+
+\subsubsection{}
+
+The total number of paths is
+\begin{equation}
+    \binom{2n}{n} - \binom{2n}{n + 1}
+\end{equation}
+This is because we exclude all the paths where you go from \((i, i) \to (i, i + 1)\), which would imply crossing the \(y = x\) line.
+
+\subsubsection{}
+
+Consider two subproblems: the number of paths going from \((0, 0) \to (i, i)\) and from \((i, i) \to (n, n)\).
+By definition, the number of paths in the first set is \(F_i\).
+Then, the remaining number of paths is \(F_{n - i - 1}\), since that is the "distance" between the locations.
+Then, the total number of paths is simply the product of the two, or \(F_i \cdot F_{n - i - 1}\).
+
+\subsubsection{}
+
+% \begin{theorem}
+%     \begin{equation}
+%         T_n = 2 T_{n - 2} + 1
+%     \end{equation}
+%     where \(n \geqslant 3\).
+% \end{theorem}
+% \begin{proof}
+%     Base case: \(n = 3\), \(T_3 = 2 (0) + 1\), there is only one spanning binary tree since \(T_2\) does not yield a valid tree.
+%     Inductive hypothesis: \(T_k = 2 T_{k - 2} + 1\).
+%     We must add one for the case in which the tree is balanced.
+%     Then, we take the previous tree, and mirror the new node across either the left or right subtree.
+%     This means that there are two new trees for each one in the previous step, which completes the formula.
+% \end{proof}
+Consider \(n\) nodes.
+Eliminate one of the nodes since it will be the root.
+Consider two sets, the first \(i\) and the \(n - i - 1\).
+Then, the \(i\) paths represent the left subtrees.
+Then, the \(n - i - 1\) paths represent the right subtrees.
+Then, the total number of binary spanning trees is
+\begin{equation}
+    T_n = \sum_{i = 1}^{n - 1} T_i \cdot T_{n - i - 1}
+\end{equation}
+We can think of the binary spanning tree with the left path represents an \(x\)-axis move and the right path represents \(y\)-axis move.
+The root node represents the starting point.
+This makes sense as given the conditions of never crossing \(y = x\), at each point there are only two paths, either increase \(x\) or increase \(y\).
+
+\section{Sundry}
+
+I did homework with:
+\begin{itemize}
+    \item Manny Fuentes \href{mailto:mfuentes@berkeley.edu}{mfuentes@berkeley.edu}
+    \item Avery Perez \href{mailto:aj_perez@berkeley.edu}{aj\_perez@berkeley.edu}
+    \item Victor Zhang \href{mailto:vzhang6@berkeley.edu}{vzhang6@berkeley.edu}
+    \item Alex Chuang \href{mailto:alexc0413@berkeley.edu}{alexc0413@berkeley.edu}
+\end{itemize}
+
+\end{document}
