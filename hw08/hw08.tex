@@ -1,0 +1,133 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb, amsfonts, amsthm}
+\usepackage{cancel}
+\usepackage[output-complex-root=j]{siunitx}
+\usepackage[american, nooldvoltagedirection]{circuitikz}
+\usepackage{bm}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{fullpage}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\thesubsection}{\thesection.\alph{subsection}}
+\renewcommand{\thesubsubsection}{\thesubsection.\roman{subsubsection}}
+\newcommand{\lemmaautorefname}{Lemma}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\renewcommand{\C}{\mathbb{C}}
+\newcommand{\unit}[1]{\bm{\hat{#1}}}
+\newcommand{\iprod}[2]{\left\langle #1, #2 \right\rangle}
+\newcommand{\tpose}[1]{\left[#1\right]^{\! \top} \!\!}
+\newcommand{\diff}[1]{\frac{d}{d #1}}
+
+\lstset{
+    language=Python,
+    tabsize=4,
+    basicstyle=\ttfamily,
+    numbers=left,
+    numberstyle=\ttfamily,
+    keywordstyle=\color{blue},
+    frame=single
+}
+
+\title{CS 70 HW08}
+\author{Bryan Ngo}
+\date{2020-10-22}
+
+\begin{document}
+
+\maketitle
+
+\section{Countability Proof Practice}
+
+\subsection{}
+
+\begin{theorem}
+    The disjoint set of unit disks centered on \((x_0, y_0)\) with radius \(r > 0\) on \(\R^2\) is countable.
+\end{theorem}
+\begin{proof}
+    \begin{lemma}
+        \(|\Q \times \Q| = |\N \times \N| = \aleph_0\).
+    \end{lemma}
+    \begin{proof}
+        By the pairing argument, it is known that \(|\N \times \N| = \aleph_0\).
+        Then, by a similar separate pairing argument, \(|\Q| = \aleph_0\).
+        Thus, the set of all \(2\)-tuples of rationals can be enumerated similarly to the \(2\)-tuples of naturals.
+    \end{proof}
+    Using the fact that a rational number exists between any two real numbers, we can uniquely identify any unit disk by a pair of rationals.
+    Namely, we can use \((m, n)\) where \(m\) is the smallest rational between \((x_0, y_0)\) and \(n\) is the arithmetic mean of the rational between \((x_0, r)\) and \((y_0, r)\).
+    Since for any unit disk, this is unique, we have established an injective function \(f: \{(x, y) \in \R^2 | (x - x_0)^2 + (y - y_0)^2 \leqslant r^2\} \mapsto (\Q \times \Q)\).
+    By the above lemma, this means the set is countable.
+\end{proof}
+
+\subsection{}
+
+\begin{theorem}
+    The disjoint set of unit circles centered on \((x_0, y_0)\) with radius \(r > 0\) on \(\R^2\) is potentially uncountable.
+\end{theorem}
+\begin{proof}
+    Consider the set of unit circles where every circle shares the same center \((x_0, y_0)\).
+    Then, since the set is disjoint by definition, for any two set elements with radii \(r_{i, j}\), \(r_i \neq r_j\).
+    Since \(r \in \R\), our set of unit circles is a potentially infinite subset of \(\R\).
+    By diagonalization, this set is potentially uncountable.
+\end{proof}
+
+\subsection{}
+
+\begin{theorem}
+    The set of increasing functions \(f: \N \mapsto \N\) such that if \(x \geqslant y\), \(f(x) \geqslant f(y)\) is potentially uncountable.
+\end{theorem}
+\begin{proof}
+    Consider the following diagonalization argument for the set of all increasing functions on \(\N\):
+    \begin{equation}
+        \begin{array}[]{c|cccc}
+            & 0 & 1 & 2 & \cdots \\
+            \hline
+            f_1 & {\color{red} 0} & 1 & 2 & \cdots \\
+            f_2 & 2 & {\color{red} 4} & 8 & \cdots \\
+            f_3 & 2 & 3 & {\color{red} 5} & \cdots \\
+            \vdots & \vdots & \vdots & \vdots & \ddots \\
+            f_n & 1 & 5 & 6 & \cdots
+        \end{array}
+    \end{equation}
+    where \(f_n(x) = x + 1\); note that \(f_n\) itself is increasing.
+    Since \(f_n\) differs from every increasing function, it cannot be an element of the set of all increasing functions on \(\N\).
+    By contradiction, the set is uncountable.
+\end{proof}
+
+\subsection{}
+
+\begin{theorem}
+    The set of decreasing functions \(f: \N \mapsto \N\) such that if \(x \geqslant y\), \(f(x) \leqslant f(y)\) is countable.
+\end{theorem}
+\begin{proof}
+    For any function \(f \in F\), where \(F\) is the set in question, the number of potential values is finite.
+    This is because we must start at some natural number \(p\), which is finite, and end at some \(q \in [0, p]\), since \(0\) is the smallest natural.
+    Consider the function \(g: (\N \mapsto \N) \mapsto \N \mapsto \{0, 1\}\), which takes in a function \(f\) and natural \(x\), then outputs \(1\) if it decreased from the previous natural, and \(0\) otherwise; \(g(f, 0) = 0\) as a special case.
+    Then, performing the mapping on our set yields a set of finite binary strings, which is always countable.
+\end{proof}
+
+\section{Hilbert's Hotel}
+
+\subsection{}
+
+For any \(k\) guests, we simply move each existing guest at room \(n\) to room \(n + k\), then fill the new guests into the vacancies.
+
+\subsection{}
+
+For a countably infinite new amount of guests, we simply move each guest at room \(n\) to room \(2n\), then move each new guest to room \(2n + 1\).
+
+\subsection{}
+
+For a countably infinite amount of countably infinite guests, we move each current guest in room \(n\) to room \(2^n\).
+Then, for the \(a\)-th bus, we move the \(b\)-th guest to room \(p_a^b\), where \(p_a\) is the \(a\)-th prime number greater than \(2\).
+
+\end{document}
