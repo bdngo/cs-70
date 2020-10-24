@@ -55,17 +55,17 @@
 \end{theorem}
 \begin{proof}
     \begin{lemma}
-        \(|\Q \times \Q| = |\N \times \N| = \aleph_0\).
+        \(|\Q \times \Q| = |\N \times \N| = |\aleph_0|\).
     \end{lemma}
     \begin{proof}
-        By the pairing argument, it is known that \(|\N \times \N| = \aleph_0\).
-        Then, by a similar separate pairing argument, \(|\Q| = \aleph_0\).
+        By the pairing argument, it is known that \(|\N \times \N| = |\aleph_0|\).
+        Then, by a similar separate pairing argument, \(|\Q| = |\aleph_0|\).
         Thus, the set of all \(2\)-tuples of rationals can be enumerated similarly to the \(2\)-tuples of naturals.
     \end{proof}
     Using the fact that a rational number exists between any two real numbers, we can uniquely identify any unit disk by a pair of rationals.
-    Namely, we can use \((m, n)\) where \(m\) is the smallest rational between \((x_0, y_0)\) and \(n\) is the arithmetic mean of the rational between \((x_0, r)\) and \((y_0, r)\).
-    Since for any unit disk, this is unique, we have established an injective function \(f: \{(x, y) \in \R^2 | (x - x_0)^2 + (y - y_0)^2 \leqslant r^2\} \mapsto (\Q \times \Q)\).
-    By the above lemma, this means the set is countable.
+    Namely, we can use \((m, n)\) where \(m\) is a rational in the real interval \([x_0 - r, x_0 + r]\), and \(n\) is a rational in the real interval \([y_0 - r, y_0 + r]\).
+    Since for any unit disk, this is unique given the fact that each disk is disjoint, we have established an injective function \(f: \{(x, y) \in \R^2 | (x - x_0)^2 + (y - y_0)^2 \leqslant r^2\} \mapsto (\Q \times \Q)\).
+    By the above lemma, the set is countable.
 \end{proof}
 
 \subsection{}
@@ -74,10 +74,10 @@
     The disjoint set of unit circles centered on \((x_0, y_0)\) with radius \(r > 0\) on \(\R^2\) is potentially uncountable.
 \end{theorem}
 \begin{proof}
-    Consider the set of unit circles where every circle shares the same center \((x_0, y_0)\).
+    Consider the subset of unit circles where every circle shares the same center \((x_0, y_0)\).
     Then, since the set is disjoint by definition, for any two set elements with radii \(r_{i, j}\), \(r_i \neq r_j\).
-    Since \(r \in \R\), our set of unit circles is a potentially infinite subset of \(\R\).
-    By diagonalization, this set is potentially uncountable.
+    Since \(r \in \R\), our set of unit circles is isomorphic to a potentially infinite subset of \(\R\).
+    By diagonalization of \(\R\) with respect to \(\N\), this set is potentially uncountable.
 \end{proof}
 
 \subsection{}
@@ -86,9 +86,10 @@
     The set of increasing functions \(f: \N \mapsto \N\) such that if \(x \geqslant y\), \(f(x) \geqslant f(y)\) is potentially uncountable.
 \end{theorem}
 \begin{proof}
-    Consider the following diagonalization argument for the set of all increasing functions on \(\N\):
+    Assume there exists a countably infinite set \(F\) containing all increasing functions on \(\N\).
+    Consider the following diagonalization argument:
     \begin{equation}
-        \begin{array}[]{c|cccc}
+        \begin{array}{c|cccc}
             & 0 & 1 & 2 & \cdots \\
             \hline
             f_1 & {\color{red} 0} & 1 & 2 & \cdots \\
@@ -99,7 +100,7 @@
         \end{array}
     \end{equation}
     where \(f_n(x) = x + 1\); note that \(f_n\) itself is increasing.
-    Since \(f_n\) differs from every increasing function, it cannot be an element of the set of all increasing functions on \(\N\).
+    Since \(f_n\) differs from every increasing function, it cannot be an element of \(F\).
     By contradiction, the set is uncountable.
 \end{proof}
 
@@ -111,8 +112,9 @@
 \begin{proof}
     For any function \(f \in F\), where \(F\) is the set in question, the number of potential values is finite.
     This is because we must start at some natural number \(p\), which is finite, and end at some \(q \in [0, p]\), since \(0\) is the smallest natural.
-    Consider the function \(g: (\N \mapsto \N) \mapsto \N \mapsto \{0, 1\}\), which takes in a function \(f\) and natural \(x\), then outputs \(1\) if it decreased from the previous natural, and \(0\) otherwise; \(g(f, 0) = 0\) as a special case.
-    Then, performing the mapping on our set yields a set of finite binary strings, which is always countable.
+    Consider the function \(g: (\N \mapsto \N) \mapsto \N \mapsto \{0, 1\}\), which takes in a function \(f\) and natural \(x\), then outputs \(1\) if it decreased from the previous natural, and \(0\) otherwise; \(g(f, p) = 1\) is a special case.
+    We solve for the case of a string of zeroes at the end of our bit string by our function simply repeating its lowest value ad infinitum by flipping our corresponding bitstring such that the leading zeroes are irrelevant.
+    If we concatenate every output and interpret it as a natural number, we now have a set of natural numbers, which is a subset of \(\N\).
 \end{proof}
 
 \section{Hilbert's Hotel}
@@ -120,14 +122,86 @@
 \subsection{}
 
 For any \(k\) guests, we simply move each existing guest at room \(n\) to room \(n + k\), then fill the new guests into the vacancies.
+This is valid since a shift of \(\N\) by a finite amount can be described as a bijection \(f: \N \mapsto \N\), so the cardinality does not change.
 
 \subsection{}
 
 For a countably infinite new amount of guests, we simply move each guest at room \(n\) to room \(2n\), then move each new guest to room \(2n + 1\).
+This interleaving works since there is a countably infinite number of both even and odd naturals.
 
 \subsection{}
 
 For a countably infinite amount of countably infinite guests, we move each current guest in room \(n\) to room \(2^n\).
 Then, for the \(a\)-th bus, we move the \(b\)-th guest to room \(p_a^b\), where \(p_a\) is the \(a\)-th prime number greater than \(2\).
+This works since each prime power is completely unique in factorization, and there is a countably infinite number of primes.
+
+\section{Finite and Infinite Graphs}
+
+\subsection{}
+
+\begin{theorem}
+    The set of all finite graphs \(G = (V, E)\) for \(V \subseteq \N\) is countable.
+\end{theorem}
+\begin{proof}
+    By definition, graph finiteness implies that both \(V\) and \(E\) are finite.
+    Assuming simple undirected graphs, the set of vertices is countable since by construction it is a subset of \(\N\).
+    Then, this puts a bound on the total number of edges.
+    At minimum, \(|E| = 0\), and all the vertices are isolated.
+    At maximum, every vertex is connected to every vertex, meaning it is a complete graph, namely \(|E| = \frac{|V| (|V| - 1)}{2}\).
+    This puts a finite bound on the number of edges in \(G\), namely \(\mathcal{P}\{E\}\), which is finite.
+    This means that there is a finite number of graphs and edge combinations in our set.
+    Thus, we have a finite power set conjoined to a countable set, making the set of \(G\) countable.
+\end{proof}
+
+\subsection{}
+
+\begin{theorem}
+    The set of all infinite graphs over a fixed, countably infinite set of vertices is uncountable.
+\end{theorem}
+\begin{proof}
+    Consider the set \(V = \{v_1, v_2, \cdots\}\).
+    We can construct a bitstring that uniquely identifies this graph by a function \(f: (\N \times \N) \mapsto \{0, 1\}\) that takes in two natural numbers representing the vertices then outputting either a \(0\) or \(1\) depending on whether an edge connects them, meaning there is a countably infinite set of edges.
+    Thus, we have an infinitely long bit string that uniquely defines any graph in our set.
+    This is isomorphic to the power set of natural numbers, which is uncountably infinite.
+    Assume for the sake of contradiction we have ordered the graphs in a set \(G\) such that \(|G| = |\aleph_0|\).
+    We can construct a graph \(g\) using the function \(h: (V, E) \mapsto \N \mapsto \{0, 1\}\) such that at the \(n\)-th graph at the \(n\)-th vertex, it inverts the edge connection.
+    Since it differs from every graph in \(G\), \(g\) is not a member of \(G\).
+    By diagonalization, \(G\) is uncountable.
+\end{proof}
+
+\subsection{}
+
+\begin{theorem}
+    The set of all graphs over a fixed, countably infinite set of vertices, such that the degree of each vertex is exactly two is uncountable.
+\end{theorem}
+\begin{proof}
+    In order to prove uncountability of our set, it is sufficient to prove the uncountability of a subset.
+    Consider the set of all graphs that form a single cycle using a countably infinite set of vertices.
+    By definition, every vertex in a cycle has degree 2.
+    We can imagine this as a mapping from the countably infinite set of vertices to another countably infinite set of vertices.
+    This is a bijection since there is the restriction that every vertex must have a degree of two, meaning it goes to only one other vertex and every vertex must be covered.
+    Thus, there is a "meta-bijection" between the set of bijections \(f: V \mapsto V\) and the set of graphs that form a cycle.
+    Then, by the hint, this subset of graphs is uncountably infinite, meaning the total graph that embeds this subset is also uncountable.
+\end{proof}
+
+\subsection{}
+
+\begin{theorem}
+    The set of trees over countably infinite vertices is countable.
+\end{theorem}
+\begin{proof}
+    This is true since we can apply an isomorphism to any tree to change the root by "hanging" the tree off of a new root.
+    Since we can change the root, we can arbitrarily change the degree of any level of the tree.
+    As such we can enumerate the degree of the roots and subtrees, which are by definition natural numbers.
+\end{proof}
+
+\section{Sundry}
+
+I did homework with:
+\begin{itemize}
+    \item Elizabeth Nguyen \href{mailto:e.v.nguyen@berkeley.edu}{e.v.nguyen@berkeley.edu}
+    \item Manny Fuentes \href{mailto:mfuentes@berkeley.edu}{mfuentes@berkeley.edu}
+    \item Victor Zhang \href{mailto:vzhang6@berkeley.edu}{vzhang6@berkeley.edu}
+\end{itemize}
 
 \end{document}
