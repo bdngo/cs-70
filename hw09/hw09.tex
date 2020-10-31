@@ -1,0 +1,224 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb, amsfonts, amsthm}
+\usepackage{cancel}
+\usepackage[output-complex-root=j]{siunitx}
+\usepackage[american, nooldvoltagedirection]{circuitikz}
+\usepackage{bm}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{fullpage}
+\usepackage{hyperref}
+
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\thesubsection}{\thesection.\alph{subsection}}
+\renewcommand{\thesubsubsection}{\thesubsection.\roman{subsubsection}}
+\newcommand{\lemmaautorefname}{Lemma}
+\renewcommand{\labelenumi}{\alph{enumi}.}
+\renewcommand{\labelenumii}{\roman{enumii}.}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\renewcommand{\C}{\mathbb{C}}
+\newcommand{\unit}[1]{\bm{\hat{#1}}}
+\newcommand{\iprod}[2]{\left\langle #1, #2 \right\rangle}
+\newcommand{\tpose}[1]{\left[#1\right]^{\! \top} \!\!}
+\newcommand{\diff}[1]{\frac{d}{d #1}}
+
+\lstset{
+    language=Python,
+    tabsize=4,
+    basicstyle=\ttfamily,
+    numbers=left,
+    numberstyle=\ttfamily,
+    keywordstyle=\color{blue},
+    frame=single
+}
+
+\title{CS 70 HW 09}
+\author{Bryan Ngo}
+\date{2020-10-30}
+
+\begin{document}
+
+\maketitle
+
+\section{Unprogrammable Programs}
+
+\subsection{}
+
+\begin{theorem}
+    A program \(P(F, x, y)\) that returns true if \(F(x) = y\) and false otherwise cannot exist.
+\end{theorem}
+\begin{proof}
+    Consider the following Python program:
+    \begin{lstlisting}
+def one_a(f, x, y):
+    if f(x) == y:
+        return True
+    elif f(x) != y or halts(f, x):
+        return False
+    \end{lstlisting}
+    There are three cases to consider:
+    \begin{itemize}
+        \item If \(F(x) = y\), return true.
+        \item If \(F(x) \neq y\), return false.
+        \item If \(F(x)\) goes into an infinite loop, then we have to return false, since it never returns anything to begin with.
+    \end{itemize}
+    In order to resolve the last case, we require a function that tells us whether or not \(F(x)\) halts.
+    This is a violation of the halting problem, so \(P\) cannot exist.
+\end{proof}
+
+\subsection{}
+
+\begin{theorem}
+    A program \(P(F, G)\) that returns true if \(F(x) = G(x)\) for some \(x \in X\) cannot exist.
+\end{theorem}
+\begin{proof}
+    Knowing whether \(F\) and \(G\) halt on the same set of inputs requires knowing if it will halt on any given input in that set.
+    In order to accomplish this, \(P\) must be able to solve the halting problem, since \(F\) and \(G\) are general functions.
+    Therefore, by the halting problem, \(P\) cannot exist.
+\end{proof}
+
+\section{Computations on Programs}
+
+\subsection{}
+
+\begin{theorem}
+    It is not possible to write a program \(P(n)\) that determines the shortest arithmetic formula that produces \(n\).
+\end{theorem}
+\begin{proof}
+    Consider the following program:
+    \begin{lstlisting}
+def one_b(fs, n):
+    min_f = lambda x: n
+    min_len = func_len(min_f, n)
+    for f in fs:
+        if func_len(f) < min_len:
+            min_f = f
+            min_len = func_len(f)
+    return min_f
+    \end{lstlisting}
+    where \lstinline|func_len| is a function that finds the length of any function in characters.
+    This program works since we can place an upper bound on the length of our function: simply returning \(n\) itself, since it does not make sense to return a program that is longer than \lstinline|len(n)|.
+    Therefore, this does not violate the halting problem since we can simply discard a function from the search once its length exceeds that of \lstinline|len(n)|.
+\end{proof}
+
+\subsection{}
+
+\begin{theorem}
+    There exists an algorithm to find the minimal program \(P(n)\) that prints out \(n \in \N\).
+\end{theorem}
+\begin{proof}
+    Consider the following program:
+    \begin{lstlisting}
+def two_a(fs, n):
+    min_f = lambda x: n
+    min_t = perf(min_f, n)
+    for f in fs:
+        if f(n) == n and perf(f, n) < min_t:
+            min_f = f
+            min_t = perf(f, n)
+    return min_f
+    \end{lstlisting}
+    where \lstinline|perf| measures the performance of the function.
+    This program can correctly calculate the minimal program, considering two cases:
+    \begin{itemize}
+        \item The program being measured halts within \lstinline|min_t| steps.
+        This means that it is better than the current minimal program, meaning it will replace \lstinline|min_f|.
+        \item The program being measured does not halt within \lstinline|min_t| steps.
+        This means halts beyond \lstinline|min_t| or does not halt at all, and will not replace \lstinline|min_f|.
+    \end{itemize}
+    This does not violate the halting problem because it is entirely possible to determine the halting of a program in a finite \(t\) steps.
+    In our case, \(t\) is simply \lstinline|min_t|, which will always be finite since there will always exist a finite-halt program: simply returning \(n\) itself.
+\end{proof}
+
+\section{Kolmogorov Complexity}
+
+\subsection{}
+
+The notion of a smallest integer that cannot be defined in under \(280\) characters does not make sense because \(280\) is itself under that limit.
+
+\subsection{}
+
+\begin{theorem}
+    Given the Kolmogorov complexity of a string \(n\) of length \(L\) compressed to \(x\) with length as \(K(x)\),
+    \begin{equation}
+        K(x) \geqslant L
+    \end{equation}
+\end{theorem}
+\begin{proof}
+    If \(K(n) < L\), then there will be multiple \(n\)'s that map to the same \(x\), by the pigeonhole principle.
+    This means that it is impossible to decompress \(x\) back to its original string, violating the motivation behind lossless compression.
+\end{proof}
+
+\subsection{}
+
+\begin{lstlisting}
+def p(n):
+    return max(i for i in range(2**n - 1), key=K)
+\end{lstlisting}
+
+\subsection{}
+
+\begin{theorem}
+    The program \(P\) that returns the maximum Kolmogorov complexity of a string \(n\) cannot exist.
+\end{theorem}
+\begin{proof}
+    Note that \(K(P) = m\).
+    Consider calculating \(P(n)\) for some \(n > m\).
+    Then, \(P(n) \geqslant L(n)\) by \textbf{4.b}.
+    This is a contradiction since by definition, the Kolmogorov complexity requires an optimally-compressed \(n\), but \(P(n)\) outputs a string that it should not be able to.
+\end{proof}
+
+\section{Five Up}
+
+\begin{enumerate}
+    \item \(|\Omega| = 2^5 = 32\)
+    \item \(|H = 3| = \binom{5}{3} = 10\)
+    \item \(|H \geqslant 3| = \sum_{i = 3}^5 \binom{5}{i} = 16\)
+    \item \(P(\{HHHTT\}) = \frac{1}{32}\), \(P(\{HHHHT\}) = \frac{1}{32}\)
+    \item Since there is only one possibility with no heads, \(P(H \geqslant 1) = \frac{31}{32}\)
+    \item \(P(H \geqslant 3) = \frac{1}{32} \sum_{i = 3}^5 \binom{5}{i} = \frac{1}{2}\)
+    \item \(P(\{HHHTT\}) = \left(\frac{2}{3}\right)^3 \left(\frac{1}{3}\right)^2 = \frac{8}{243}\), \(P(\{HHHHT\}) = \left(\frac{2}{3}\right)^4 \left(\frac{1}{3}\right) = \frac{16}{243}\)
+    \item Since there is only one possibility with no heads, \(P(H \geqslant 1) = 1 - \left(\frac{1}{3}\right)^5 = \frac{242}{243}\)
+    \item \(P(H \geqslant 3) = \sum_{i = 3}^5 \binom{5}{i} \left(\frac{2}{3}\right)^i \left(\frac{1}{3}\right)^{5 - i} = \frac{64}{81}\)
+\end{enumerate}
+
+\section{Ball-and-Bin Counting Problems}
+
+\begin{enumerate}
+    \item \(|\Omega| = \binom{7 + 5 - 1}{7} = 330\), \(|B_1 = 3| = \binom{4 + 4 - 1}{4} = 35\), \(P(B_1 = 3) = \frac{7}{66}\)
+    \item \(P(B_1 \geqslant 3) = P(B_3 \geqslant 3) = \frac{1}{330} \sum_{i = 3}^7 \binom{(7 - i) + 4 - 1}{7 - i} = \frac{7}{33}\)
+    \item \(P(B_n \geqslant 3) = \frac{1}{330} \left(5 \cdot 35 - 3(1 + 2 + 3 + 4)\right) = \frac{145}{330}\), where we subtract overcounting of bins that already have the requisite number of balls.
+\end{enumerate}
+
+\section{Monty Hall's Revenge}
+
+\subsection{}
+
+The original probability before revealing the door is \(P(C) = \frac{1}{n}\).
+After revealing one of the goats, the original door still has a probability of \(P(C) = \frac{1}{n}\).
+The number of possible cars is \(1 - \frac{1}{n} = \frac{n - 1}{n}\).
+The total amount of doors remaining (that you have not chosen) is \(n - 2\).
+Thus, the odds when switching are now \(\frac{n - 1}{n (n - 2)}\).
+
+\subsection{}
+
+In this situation, there will always be \(2\) remaining: the one that you chose, and the one you should switch to.
+Then, our formula is now \(\frac{n - 1}{n (n - (n - 1))} = \frac{n - 1}{n}\).
+
+\subsection{}
+
+In order to maximize the net benefit of switching, you need as high a \(j\) as possible.
+The chances of winning a car are \(\frac{k}{n}\).
+The odds of choosing a door with a car is \(\frac{k (n - 1)}{n}\).
+The odds after switching are \(\frac{k (n - 1)}{n (n - j - 1)}\).
+Thus, the ratio of staying over switching are \(\frac{n - 1}{n - j - 1}\).
+Thus, \(k\) is irrelevant, and you want the highest \(j\) possible, or \(j = n - k - 1\).
+
+\end{document}
