@@ -1,0 +1,250 @@
+\documentclass{article}
+\usepackage{eecstex}
+
+\title{CS 70 HW 10}
+\author{Bryan Ngo}
+\date{2020-11-05}
+
+\begin{document}
+
+\maketitle
+
+\section{Indepedent Complements}
+
+\begin{equation}
+    \Pr(A \cap B) = \Pr(A) \Pr(B)
+\end{equation}
+
+\subsection{}
+
+\begin{theorem}
+    \(\Pr(\overline{A} \cap \overline{B}) = \Pr(\overline{A}) \Pr(\overline{B})\).
+\end{theorem}
+\begin{proof}
+    \begin{align}
+        \Pr(\overline{A} \cap \overline{B}) &= \Pr(\overline{A \cup B}) \\
+        &= 1 - \Pr(A \cup B) \\
+        &= 1 - \Pr(A) - \Pr(B) + \Pr(A \cap B) \\
+        &= 1 - \Pr(A) - \Pr(B) + \Pr(A) \Pr(B) \\
+        &= (1 - \Pr(A)) (1 - \Pr(B)) = \Pr(\overline{A}) \Pr(\overline{B})
+    \end{align}
+\end{proof}
+
+\subsection{}
+
+\begin{theorem}
+    \(\Pr(A \cap \overline{B}) = \Pr(A) \Pr(\overline{B})\).
+\end{theorem}
+\begin{proof}
+    \begin{align}
+        \Pr(A) &= \Pr(A \cap B) + \Pr(A \cap \overline{B}) \\
+        \Rightarrow \Pr(A \cap \overline{B}) &= \Pr(A) - \Pr(A \cap B) = \Pr(A) - \Pr(A) \Pr(B) \\
+        &= \Pr(A) (1 - \Pr(B)) = \Pr(A) \Pr(\overline{B})
+    \end{align}
+\end{proof}
+
+\subsection{}
+
+\begin{theorem}
+    \(\Pr(A \cap \overline{A}) \neq \Pr(A) \Pr(\overline{A})\).
+\end{theorem}
+\begin{proof}
+    Consider the probability of rolling some \(n\) on a d6,
+    \begin{align}
+        \Pr(A) &= \frac{1}{6} \\
+        \Pr(\overline{A}) &= \frac{5}{6} \\
+        \Pr(A) \Pr(\overline{A}) &= \frac{5}{36} \\
+        \Pr(A \cap \overline{A}) &= \Pr(\emptyset) = 0 \neq \Pr(A) \Pr(\overline{A})
+    \end{align}
+\end{proof}
+
+\subsection{}
+
+\begin{theorem}
+    It is possible that \(A = B\).
+\end{theorem}
+\begin{proof}
+    \begin{align}
+        \Pr(A \cap B) &= \Pr(A) \Pr(B) \\
+        \Pr(A \cap A) &= \Pr(A) = \Pr(A) \Pr(A) \\
+        \Rightarrow \Pr(A) (\Pr(A) - 1) &= 0 \\
+        \Rightarrow \Pr(A) &= 0, 1
+    \end{align}
+    Meaning that the theorem is only true iff \(A\) almost never or almost surely occurs.
+\end{proof}
+
+\section{Lie Detector}
+
+Letting \(G\) be the event where the person is guilty and \(T\) be the event in which the test says they're guity,
+\begin{align}
+    \Pr(T \mid G) &= \frac{4}{5} \\
+    \Pr(T \mid G^\complement) &= 1 - \Pr(T^\complement \mid G^\complement) = \frac{1}{10} \\
+    \Pr(G) &= \frac{1}{100} \\
+    \Pr(G \mid T) &= \frac{\Pr(T \mid G) \Pr(G)}{\Pr(T)} = \frac{\Pr(T \mid G) \Pr(G)}{\Pr(T \cap G) + \Pr(T \cap G^\complement)} \\
+    \Pr(T \cap G) + \Pr(T \cap G^\complement) &= \Pr(T \mid G) \Pr(G) + \Pr(T \mid G^\complement) \Pr(G^\complement) \\
+    &= \frac{4}{5} \frac{1}{100} + \frac{1}{10} \frac{99}{100} = \frac{107}{1000} \\
+    \Rightarrow \Pr(G \mid T) &= \frac{\Pr(T \mid G) \Pr(G)}{\Pr(T \cap G) + \Pr(T \cap G^\complement)} = \frac{8}{107}
+\end{align}
+
+\section{Flipping Coins}
+
+\begin{enumerate}
+    \item By exhaustion, \(\Pr(\ldots HH) = \frac{3}{32}\).
+    This is because there are \(8\) possibilities for the first three turns, but only \(3\) of them do not end the game early, i.e. two heads in a row or a heads in the 3rd slot.
+    \item We require the last \(3\) coins to be \(THH\).
+    Then, that leaves \(3\) possibilities that do not end the game early.
+    Out of those, \(2\) have one head in them.
+    \(\Pr(\_ \ \_ \mid THH) = \frac{\Pr(\_ \ \_ \cap THH)}{\Pr(THH)} = \frac{2}{3}\).
+    \item Concentrating on winning with heads, the probability of the game ending with \(3\) coins is \(\frac{1}{8}\).
+    The probability of ending with \(4\) coins is \(\frac{1}{16}\).
+    The probability of ending with \(5\) coins is \(\frac{2}{32}\).
+    The probability of ending with \(6\) coins is \(\frac{3}{64}\).
+    Adding them yields \(\frac{19}{64}\).
+    Since we are looking to win with either heads or tails, we double that probability to \(\Pr(\ldots HHH \cup \ldots TTT) = \frac{38}{64}\).
+\end{enumerate}
+
+\section{To Be Fair}
+
+Consider the sample space of coin toss pairs \(\Omega = \{H, T\}^2 = \{TT, TH, HT, HH\}\).
+Given an unfair probability \(\Pr(H) = p \neq \frac{1}{2}\),
+\begin{align}
+    \Pr(TT) &= (1 - p)^2 \\
+    \Pr(TH) &= (1 - p) p \\
+    \Pr(HT) &= p (1 - p) \\
+    \Pr(HH) &= p^2
+\end{align}
+Note that \(\Pr(TH) = \Pr(HT)\).
+Thus, we can simply throw out the cases where our coin comes up either all heads or all tails.
+With this in mind, we now have a new sample space \(\Omega' = \{TH, HT\}\).
+\(\Omega'\) is uniform, since both outcomes have equal probability.
+
+\section{Identity Theft}
+
+\subsection{}
+
+Our sample space \(|\Omega| = n!\).
+Then, the total amount orderings where at least one ID card is in the correct position is
+\begin{equation}
+    |C| = \left|\bigcup_{i = 1}^n A_i\right|
+\end{equation}
+where \(A_i\) is the event where the \(i\)-th card is correct.
+Using inclusion-exclusion from Note 10,
+\begin{align}
+    \left|\bigcup_{i = 1}^n A_i\right| &= \sum_{i = 1}^n (-1)^{i - 1} \left(\sum_{1 \leqslant j_1 < \ldots < j_i \leqslant n} |A_{j_1} \cap \cdots \cap A_{j_i}|\right) \\
+    &= \sum_{i = 1}^n (-1)^{i - 1} \binom{n}{i} (n - i)! \\
+    &= \sum_{i = 1}^n (-1)^{i - 1} \frac{n!}{i! \cancel{(n - i)!}} \cancel{(n - i)!} = n! \sum_{i = 1}^n \frac{(-1)^{i - 1}}{i!}
+\end{align}
+Thus, the probability that none of them are correct is
+\begin{equation}
+    \Pr(C = 0) = 1 - \left(\frac{1}{\cancel{n!}} \cancel{n!} \sum_{i = 1}^n \frac{(-1)^{i - 1}}{i!}\right) = \sum_{i = 0}^n \frac{(-1)^i}{i!}
+\end{equation}
+
+\subsection{}
+
+\begin{equation}
+    \lim_{n \to \infty} \sum_{i = 0}^n \frac{(-1)^i}{i!} = e^{-1}
+\end{equation}
+
+\section{Balls and Bins, All Day Every Day}
+
+\subsection{}
+
+\begin{equation}
+    \Pr(B_0 = k) = \binom{n}{k} \left(\frac{1}{n}\right)^k \left(1 - \frac{1}{n}\right)^{n - k}
+\end{equation}
+
+\subsection{}
+
+\begin{equation}
+    p = \Pr\left(B_0 \geqslant \frac{n}{2}\right) = \sum_{i = \frac{n}{2}}^n \binom{n}{i} \left(\frac{1}{n}\right)^i \left(1 - \frac{1}{n}\right)^{n - i}
+\end{equation}
+
+\subsection{}
+
+The union bound is
+\begin{equation}
+    \Pr\left(\bigcup_{i = 1}^{n} A_i\right) \leqslant \sum_{i = 1}^{n} p = pn
+\end{equation}
+
+\subsection{}
+
+By inclusion-exclusion,
+\begin{equation}
+    \Pr\left(B_0 \geqslant \frac{n}{2} \cup B_1 \geqslant \frac{n}{2}\right) = 2pn - \frac{\left(\frac{n}{2}\right)!}{n!}
+\end{equation}
+
+\subsection{}
+
+Assuming a random variable \(X\) being the count of the ball,
+\begin{equation}
+    \Pr(b_0 \in B) = E(X) = \sum_{i = 1}^n \frac{1}{i} \binom{n}{i} \left(\frac{1}{n}\right)^i \left(1 - \frac{1}{n}\right)^{n - i}
+\end{equation}
+
+\section{Cliques in Random Graphs}
+
+\subsection{}
+
+\begin{equation}
+    |\Omega| = 2^{\binom{n}{2}}
+\end{equation}
+
+\subsection{}
+
+Since \(E_S\) requires one to roll heads on every pair, there is only one case for which this is true, so
+\begin{align}
+    \Pr(E_S) = \frac{1}{2^{\binom{k}{2}}}
+\end{align}
+
+\subsection{}
+
+\begin{theorem}
+    For sets of vertices \(V_1 = \{v_1, v_2, \ldots, v_\ell\}\) and \(V_2 = \{w_1, w_2, \ldots, w_k\}\), \(E_{V_1}\) and \(E_{V_2}\) are indepedent iff \(V_1 \cap V_2 = \emptyset\).
+\end{theorem}
+\begin{proof}
+    There are two cases to consider:
+    If \(V_1 \cap V_2 = \emptyset\), then knowing the probability of completeness for one set does not tell you anything about the completeness for the other set, so it is independent.
+    If \(V_1 \cap V_2 \neq \emptyset\), then
+    \begin{align}
+        \Pr(E_{V_1} \cap E_{V_2})  = \frac{\Pr(E_{V_1}) \Pr(E_{V_2})}{\Pr(E_{V_1 \cap V_2})} \neq \Pr(E_{V_1}) \Pr(E_{V_2})
+    \end{align}
+    There is an edge case where \(\Pr(E_{V_1 \cap V_2}) = 1\), but this only occurs when \(V_1\) and \(V_2\) share exactly one point, which is the \(1\)-clique.
+\end{proof}
+
+\subsection{}
+
+\begin{theorem}
+    \(\binom{n}{k} \leqslant n^k\).
+\end{theorem}
+\begin{proof}
+    \begin{equation}
+        \binom{n}{k} = \frac{n!}{k! (n - k)!} \leqslant \frac{n!}{(n - k)!} = \prod_{i = 0}^{k - 1} (n - i) \leqslant n^k
+    \end{equation}
+    There are three cases to consider:
+    \begin{itemize}
+        \item If \(k = 0\), then \(\binom{n}{0} = n^0 = 1\).
+        \item If \(k = 1\), then \(\binom{n}{1} = n^1 = n\).
+        \item If \(k > 1\), then the exponential has at least two factors, so at least one is strictly less than \(n\).
+    \end{itemize}
+\end{proof}
+
+\subsection{}
+
+\begin{theorem}
+    \(\Pr(E_S) \leqslant \frac{1}{n}\) for some \(S\) with \(k \geqslant 4 \log_2(n) + 1\).
+\end{theorem}
+\begin{proof}
+    \begin{align}
+        \Pr(E_S) &= \frac{1}{2^{\binom{k}{2}}} \\
+        &= \frac{1}{2^{\frac{k (k - 1)}{2}}} \\
+        &= \frac{1}{2^{\frac{k (4 \log_2(n))}{2}}} \\
+        &= \frac{1}{2^{2 \log_2(n^k)}} = \frac{1}{n^{2k}} \leqslant \frac{1}{n}
+    \end{align}
+\end{proof}
+
+\section{Sundry}
+
+\begin{itemize}
+    \item Victor Zhang \href{mailto:vzhang6@berkeley.edu}{vzhang6@berkeley.edu}
+\end{itemize}
+
+\end{document}
