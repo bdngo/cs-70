@@ -1,0 +1,197 @@
+\documentclass{article}
+\usepackage{eecstex}
+
+\newcommand{\E}{\mathbb{E}}
+
+\title{CS 70 HW 11}
+\author{Bryan Ngo}
+\date{2020-11-12}
+
+\begin{document}
+
+\maketitle
+
+\section{Random Variables Warm-Up}
+
+\begin{enumerate}
+    \item
+        \begin{enumerate}
+            \item \(\Pr(X = 0) = \frac{2}{3}\), \(\Pr(X = 1) = \frac{1}{9}\), \(\Pr(X = 2) = \frac{2}{9}\)
+            \item \(\Pr(Y = 0) = \frac{4}{9}\), \(\Pr(Y = 1) = \frac{2}{9}\), \(\Pr(Y = 2) = \frac{1}{3}\)
+        \end{enumerate}
+    \item
+        \begin{enumerate}
+            \item \(\E(X) = 0 \cdot \frac{2}{3} + 1 \cdot \frac{1}{9} + 2 \cdot \frac{2}{9} = \frac{5}{9}\)
+            \item \(\E(Y) = 0 \cdot \frac{4}{9} + 1 \cdot \frac{2}{9} + 2 \cdot \frac{1}{3} = \frac{8}{9}\)
+        \end{enumerate}
+    \item
+        \begin{enumerate}
+            \item \(\sigma^2(X) = 1 \cdot \frac{1}{9} + 4 \cdot \frac{2}{9} - \left(\frac{5}{9}\right)^2 = \frac{59}{81}\)
+            \item \(\sigma^2(Y) = 1 \cdot \frac{2}{9} + 4 \cdot \frac{1}{3} - \left(\frac{8}{9}\right)^2 = \frac{53}{81}\)
+        \end{enumerate}
+    \item
+        \begin{enumerate}
+            \item \(\E(I) = 0 \cdot (1 - \Pr(X = 1)) + 1 \cdot \Pr(X = 1) = \frac{1}{9}\)
+            \item \(\E(J) = 0 \cdot (1 - \Pr(Y = 1)) + 1 \cdot \Pr(Y = 1) = \frac{2}{9}\)
+            \item \(\E(IJ) = \sum_i \sum_j ij \cdot \Pr(I = i, J = j) = 1 \cdot 1 \cdot \Pr(X = 1, Y = 1) = \frac{1}{9}\)
+        \end{enumerate}
+    \item \(\E(I_A I_B) = \sum_{a \in A} \sum_{b \in B} ab \cdot \Pr(I_A = a, I_B = b) = 1 \cdot 1 \Pr(I_A = 1, I_B = 1) = \Pr(A \cap B)\)
+\end{enumerate}
+
+\section{Marginals}
+
+\subsection{}
+
+\begin{theorem}
+    There cannot exist random variables \(X_1, X_2, X_3\) such that pairwise,
+    \begin{align}
+        \Pr(X_i = 1, X_j = -1) &= \Pr(X_i = -1, X_j = 1) = \frac{1}{2} \\
+        \Pr(X_i = X_j) &= 0
+    \end{align}
+\end{theorem}
+\begin{proof}
+    By contradiction, assume the above holds.
+    Then, consider the pairwise comparisons of \(\{\Pr(X_i = -X_j) \mid i < j\}\), which encapsulates all the possible comparisons since \(\Pr(X_i = X_j) = 0\) and the comparisons are commutative:
+    \begin{align}
+        \Pr(X_1 = -X_2) &= \frac{1}{2} \\
+        \Pr(X_2 = -X_3) &= \frac{1}{2} \\
+        \Pr(X_3 = -X_1) &= \frac{1}{2}
+    \end{align}
+    However, since \(X_i \in \{-1, 1\}\), we end up with \(X_1 = -X_1\), or \(1 = -1\), which means we reach a contradiction.
+\end{proof}
+\begin{proof}
+    Alternatively, we can brute-force through every possible random variable, and we get a probability of all zeroes
+    This is because since there are three variables but only two states, by the pigeonhole principle there must be two that are the same, thus it will always have a probability of \(0\).
+    Since \(\sum_{x_1, x_2, x_3} \Pr(X_1 = x_1, X_2 = x_2, X_3 = x_3) \neq 1\), we have reached a contradiction.
+\end{proof}
+
+\subsection{}
+
+\begin{theorem}
+    The properties as given in the previous problem hold for some sequence of random variables \(\{X_1, X_2, \ldots, X_n\}\) where \(n \geqslant 3\) is even.
+\end{theorem}
+\begin{proof}
+    Given the equation
+    \begin{equation}
+        i - j \equiv 1 \pmod{n}
+    \end{equation}
+    This means that our \(i, j\) must differ by one, and that \(X_1, X_n\) can be compared.
+    This restriction means that only certain pairwise comparisons can be made in our joint distribution.
+    Thus, in order to form a valid joint distribution, we can have \(X_i = (-1)^{i - 1}\).
+    This is valid since the marginal distributions will be \(\frac{1}{2}\), and we can get the other \(\frac{1}{2}\) from the other pair's marginal distribution, since it differs in sign from the adjacent random variables.
+    In other words, we must have all comparable random variables differ.
+    Where \(n\) is even, this is possible since our first random variable will have a different sign than the last variable, since exactly half will have one sign.
+    In other words, we can pair up every adjacent random variable with every other random variable.
+    Where \(n\) is odd, this does not work since our first random variable will have the same sign as our last random variable, so the marginal distributions will not add up to \(\frac{1}{2}\) and we reach the same contradiction as above where \(1 = -1\).
+    This proof is analogous to the proof of vertex 2-coloring an \(n\)-cycle.
+    When \(n\) is even, it is possible by alternating the color.
+    when \(n\) is odd, it is impossible to 2-color.
+\end{proof}
+
+\section{Testing Model Planes}
+
+\subsection{}
+
+The distribution of \(X_1\) is a binomial distribution with probability
+\begin{equation}
+    \Pr(X_1 = k) = \binom{n}{k} p^k (1 - p)^{n - k}
+\end{equation}
+
+\subsection{}
+
+On the second day, we can treat it as flying each plane twice,
+\begin{equation}
+    \Pr(X_2 = k) = \binom{n}{k} p^{2k} (1 - p)^{2(n - k)}
+\end{equation}
+
+\subsection{}
+
+\begin{equation}
+    \Pr(X_t = k) = \binom{n}{k} p^{tk} (1 - p)^{t(n - k)}
+\end{equation}
+
+\subsection{}
+
+\begin{equation}
+    \Pr(X_t \geqslant 1) = 1 - \Pr(X_t = 0) = 1 - (1 - p)^{tn}
+\end{equation}
+
+\subsection{}
+
+\begin{align}
+    \Pr(A_1) &= (1 - p)^2 \\
+    \Pr(B_1) &= (1 - p)^2 \\
+    \Pr(A_1) \Pr(B_1) &= (1 - p)^4 \\
+    \Pr(A_1 \cap B_1) &= (1 - p)^3 \neq \Pr(A_1) \Pr(B_1)
+\end{align}
+
+\subsection{}
+
+Since we freeze the first plane, there are \(n - 1\) ways to place the second plane crash, so
+\begin{align}
+    \Pr(A_2) &= (n - 1) p^{n - 2} (1 - p)^2 \\
+    \Pr(B_2) &= (1 - p) \\
+    \Pr(A_2) \Pr(B_2) &= (n - 1) p^{n - 2} (1 - p)^3 \\
+    \Pr(A_2 \cap B_2) &= p^{n - 2} (1 - p)^2 \\
+    \Rightarrow (n - 1) \cancel{p^{n - 2}} (1 - p)^3 &= \cancel{p^{n - 2}} (1 - p)^2 \\
+    \Rightarrow n &= 1 + \frac{1}{1 - p}
+\end{align}
+meaning that \(p = \frac{k - 1}{k}\), for some \(k \in \Z \setminus \{0\}\).
+
+\subsection{}
+
+\begin{proof}
+    Consider the case of \(n\) planes with \(\Pr(X_1 = 0)\) and \(\Pr(X_2 = n)\).
+    Then,
+    \begin{align}
+        \Pr(X_1 = 0) &= (1 - p)^n \\
+        \Pr(X_2 = n) &= p^{2n} \\
+        \Pr(X_1 = 0) \Pr(X_2 = n) &= p^{2n} (1 - p)^n \\
+        \Pr(X_1 = 0 \cap X_2 = n) &= 0 \neq \Pr(X_1 = 0) \Pr(X_2 = n)
+    \end{align}
+\end{proof}
+
+\section{Graph}
+
+\subsection{}
+
+Consider \(\E(X) = \sum_{i = 1}^n \E(X_i)\).
+By the linearity of expectation,
+\begin{equation}
+    \E(X) = n E(X_i) = n (0 \cdot p^{n - 1} + 1 \cdot (1 - p)^{n - 1}) = n (1 - p)^{n - 1}
+\end{equation}
+
+\subsection{}
+
+\begin{align}
+    \E(X^2) &= n (1 - p)^{n - 1} \\
+    \E(X)^2 &= \left(n (1 - p)^{n - 1}\right)^2 = n^2 (1 - p)^{2 (n - 1)} \\
+    \sigma^2(X) &= n (1 - p)^{n - 1} - n^2 (1 - p)^{2 (n - 1)}
+\end{align}
+
+\section{Triangles in Random Graphs}
+
+
+The number of triangles in a given random graph is \(\binom{n}{3}\).
+So by linearity of expectation,
+\begin{equation}
+    \E(X) = \binom{n}{3} \E(X_i)
+\end{equation}
+where \(X_i\) is the \(i\)th triangle being formed.
+The probability of an edge between two vertices existing is \(\frac{m}{\binom{n}{2}}\).
+So the probability of all three edges forming a triangle (i.e. existing) is \(\Pr(X_i) = \frac{m}{\binom{n}{2}} \frac{m - 1}{\binom{n}{2} - 1} \frac{m - 2}{\binom{n}{2} - 2}\).
+So the expected value is
+\begin{equation}
+    \E(X) = \binom{n}{3} (0 \cdot (1 - \Pr(X_i)) + 1 \cdot \Pr(X_i)) = \binom{n}{3} \frac{m (m - 1) (m - 2)}{\binom{n}{2} \left(\binom{n}{2} - 1\right) \left(\binom{n}{2} - 2\right)}
+\end{equation}
+
+\section{Whitening}
+
+\section{Sundry}
+
+\begin{itemize}
+    \item Manny Fuentes \href{mailto:mfuentes@berkeley.edu}{mfuentes@berkeley.edu}
+    \item Victor Zhang \href{mailto:vzhang6@berkeley.edu}{vzhang6@berkeley.edu}
+\end{itemize}
+
+\end{document}
