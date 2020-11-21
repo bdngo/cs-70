@@ -1,0 +1,259 @@
+\documentclass{article}
+\usepackage{eecstex}
+
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\cov}{\operatorname{cov}}
+
+\title{CS 70 HW 12}
+\author{Bryan Ngo}
+\date{2020-11-19}
+
+\begin{document}
+
+\maketitle
+
+\section{Graph}
+
+% TODO: FIX THIS
+
+\begin{equation}
+    \E(X) = n (1 - p)^{n - 1}
+\end{equation}
+In order to find what \(\E(X^2)\) is,
+\begin{align}
+    \E(X^2) &= \E\left((X_1 + X_2 + \cdots + X_n)^2\right) = \E\left(\sum_{i \in [1, n]} X_i^2\right) + 2 \frac{n (n - 1)}{2} \sum_{1 \leqslant i < j \leqslant n} \E(X_i X_j) \\
+    &= n (1 - p)^{n - 1} + 2 \Pr(X = 1, Y = 1) \\
+    &= n (1 - p)^{n - 1} + n (n - 1) (1 - p)^{n - 1} (1 - p)^{n - 2} \\
+    &= n (1 - p)^{n - 1} + n (n - 1) (1 - p)^{2n - 3}
+\end{align}
+Then, using the definition of variance,
+\begin{align}
+    \E^2(X) &= \left(n (1 - p)^{n - 1}\right)^2 = n^2 (1 - p)^{2n - 2} \\
+    \sigma^2(X) &= n (1 - p)^{n - 1} + n (n - 1) (1 - p)^{2n - 3} - n^2 (1 - p)^{2n - 2}
+\end{align}
+
+\section{Whitening}
+\begin{theorem}
+    There exists scalars \(a, b, c, d\) with the condition that \(ad - bc \neq 0\) such that \(\cov(\widetilde{X}, \widetilde{Y}) = 0\), where \(\widetilde{X} = aX + By\) and \(\widetilde{Y} = cX + dY\).
+\end{theorem}
+\begin{proof}
+    By the bilinearity of covariance and using the hint, meaning that \(c = 0\), \(d = 1\).
+    \begin{align}
+        \cov(\widetilde{X}, Y) = \cov(aX + bY, Y) &= a \cov(X, Y) + b \cov(Y, Y) = 0 \\
+        &= a \cov(X, Y) + b \cdot \sigma^2(Y) = 0 \\
+        \Rightarrow a &= -\frac{\sigma^2(Y)}{\cov(X, Y)}
+    \end{align}
+    where we set \(b = 1\).
+\end{proof}
+
+\section{Probablistic Bounds}
+
+\subsection{}
+
+\begin{theorem}
+    Given a distribution with \(\E(X) = 2\), \(\sigma^2(X) = 9\), and \(X \leqslant 10\),
+    \begin{equation}
+        \E(X^2) = 13
+    \end{equation}
+\end{theorem}
+\begin{proof}
+    \begin{equation}
+        \sigma^2(X) + \E^2(X) = E(X^2) = 9 + 2^2 = 13
+    \end{equation}
+\end{proof}
+
+\subsection{}
+
+\begin{theorem}
+    Given a distribution with \(\E(X) = 2\), \(\sigma^2(X) = 9\), and \(X \leqslant 10\),
+    \begin{equation}
+        \Pr(X \geqslant 2) \ngtr 0
+    \end{equation}
+\end{theorem}
+\begin{proof}
+    Consider the distribution \((X, \Pr(X)) = \left\{\left(-1, \frac{1}{2}\right), \left(5, \frac{1}{2}\right)\right\}\).
+    \(\Pr(X = 2) = 0\), but \(\E(X) = 2\) and \(\sigma^2(X) = 9\).
+\end{proof}
+
+\subsection{}
+
+\begin{theorem}
+    Given a distribution with \(\E(X) = 2\), \(\sigma^2(X) = 9\), and \(X \leqslant 10\),
+    \begin{equation}
+        \Pr(X \geqslant 2) \neq \Pr(X \leqslant 2)
+    \end{equation}
+\end{theorem}
+\begin{proof}
+    Heuristically, we can simply pick some distribution that has more negative numbers than positive numbers, but still maintains the given properties as above.
+    Consider the distribution \((X, \Pr(X)) = \left\{\left(0, \frac{9}{13}\right), \left(\frac{13}{2}, \frac{4}{13}\right)\right\}\).
+    \(\Pr(X \leqslant 2) > \Pr(X \geqslant 2)\), and the above properties are maintained.
+\end{proof}
+
+\subsection{}
+
+\begin{theorem}
+    Given a distribution with \(\E(X) = 2\), \(\sigma^2(X) = 9\), and \(X \leqslant 10\),
+    \begin{equation}
+        \Pr(X \leqslant 1) \leqslant \frac{8}{9}
+    \end{equation}
+\end{theorem}
+\begin{proof}
+    We can define a new random variable \(X' = 1 - X\), which implies that \(X' \geqslant 0\).
+    Using Markov's inequality with the function \(f(x) = x + 9\),
+    \begin{equation}
+        \Pr(X \leqslant 1) = \Pr(X' \geqslant 0) \leqslant \frac{\E(X' + 9)}{f(0)} = \frac{\E(1 - X + 9)}{9} = \frac{10 - \cancelto{2}{\E(X)}}{9} = \frac{8}{9}
+    \end{equation}
+\end{proof}
+
+\subsection{}
+
+\begin{theorem}
+    Given a distribution with \(\E(X) = 2\), \(\sigma^2(X) = 9\), and \(X \leqslant 10\),
+    \begin{equation}
+        \Pr(X \geqslant 6) \leqslant \frac{9}{16}
+    \end{equation}
+\end{theorem}
+\begin{proof}
+    % Using Markov's inequality with \(f(x) = \frac{11}{2} + \frac{7}{4}x\),
+    % \begin{equation}
+    %     \Pr(X \geqslant 6) \leqslant \frac{\E\left(\frac{11}{2} + \frac{7}{4}X\right)}{f(6)} = \frac{\frac{11}{2} + \frac{7}{4}\E(X)}{16} = \frac{9}{16}
+    % \end{equation}
+    Using Chebyshev's inequality, we can transform \(X \geqslant 6 \implies |X - 2| \geqslant 4\),
+    \begin{equation}
+        \Pr(X \geqslant 6) = \Pr(X - 2 \geqslant 4) \leqslant \Pr(|X - 2| \geqslant 4) \leqslant \frac{\sigma^2(X)}{4^2} = \frac{9}{16}
+    \end{equation}
+\end{proof}
+
+\section{Subset Card Game}
+
+\subsection{}
+
+\begin{theorem}
+    \begin{equation}
+        \Pr(X \geqslant \alpha) \leqslant \frac{1}{8 \alpha^2}
+    \end{equation}
+\end{theorem}
+\begin{proof}
+    Finding expectation and variance using \(I\) as an indicator variable,
+    \begin{align}
+        \E(X) &= \sum_{i \in [1, k]} c_i I_i = 0 \\
+        \sigma^2(X) &= \sum_{i \in [1, k]} \sigma^2(c_i I_i) = \sum_{i \in [1, k]} c_i^2 \sigma^2(I_i) = \frac{1}{4}
+    \end{align}
+    Using Chebyshev's inequality, we can prove that
+    \begin{equation}
+        \Pr(|X - 0| \geqslant \alpha) \leqslant \frac{1}{4\alpha^2}
+    \end{equation}
+    Then, using the fact that the distribution is symmetric around the mean (i.e. if one player has a score of \(x\), the other must have \(-x\)),
+    \begin{align}
+        \Pr(|X - 0| \geqslant \alpha) = \Pr(X \geqslant \alpha) + \Pr(X \leqslant -\alpha) &\leqslant \frac{1}{4\alpha^2} \\
+        \Rightarrow 2 \Pr(X \geqslant \alpha) &\leqslant \frac{1}{4 \alpha^2} \\
+        \Rightarrow \Pr(X \geqslant \alpha) &\leqslant \frac{1}{8 \alpha^2}
+    \end{align}
+\end{proof}
+
+\subsection{}
+
+Our deck will consist of \(2\) cards with values \(\pm \sqrt{2}\) and \(k - 2\) cards with \(0\) and we set \(\alpha = \frac{\sqrt{2}}{2}\).
+\(\E(X) = 0\) and \(\sigma^2(X) = \frac{\sqrt{2}^2}{2} = 1\).
+\begin{theorem}
+    \begin{equation}
+        \Pr(X = \alpha) = \frac{1}{8 \alpha^2} = \frac{1}{4}
+    \end{equation}
+\end{theorem}
+\begin{proof}
+    This is the case because by the rule of total probability, the \(4\) possibilities are, in two coin flips,:
+    \begin{enumerate}
+        \item drawing both \(0\), meaning nothing happens,
+        \item drawing a \(\sqrt{2}\), which wins the game,
+        \item drawing a \(-\sqrt{2}\),
+        \item or drawing both \(\pm \sqrt{2}\), meaning a value of \(0\).
+    \end{enumerate}
+    each has uniform probability because our sample space \(\Omega = \{H, T\}^2\).
+\end{proof}
+
+\section{Just One Tail, Please}
+
+\subsection{}
+
+\begin{theorem}
+    Given some \(\phi(x) = (x + c)^2\), \(\E(X) = 0\), \(\sigma^2(X) = \sigma^2\),
+    \begin{equation}
+        \Pr(X \geqslant \alpha) \leqslant \frac{\sigma^2 + c^2}{(\alpha + c^2)}
+    \end{equation}
+\end{theorem}
+\begin{proof}
+    Plugging into Markov's generalized inequality,
+    \begin{align}
+        \Pr(X \geqslant \alpha) &\leqslant \frac{\E((X + c)^2)}{(\alpha + c^2)} \\
+        &= \frac{\E(X^2 + 2cX + c^2)}{(\alpha + c)^2} \\
+        &= \frac{\overbrace{\E(X^2) - \E^2(X)}^{\sigma^2(X)} + 2c\cancelto{0}{\E(X)} + c^2}{(\alpha + c)^2} \\
+        &= \frac{\sigma^2 + c^2}{(\alpha + c)^2}
+    \end{align}
+\end{proof}
+
+\subsection{}
+
+\begin{theorem}
+    Given some \(\phi(x) = (x + c)^2\), \(\E(X) = 0\), \(\sigma^2(X) = \sigma^2\), there exists some value of \(c\) such that
+    \begin{equation}
+        \Pr(X \geqslant \alpha) \leqslant \frac{\sigma^2}{\alpha^2 + \sigma^2}
+    \end{equation}
+\end{theorem}
+\begin{proof}
+    Letting \(f(c) = \frac{\sigma^2 + c^2}{(\alpha + c)^2}\), we can find the minimum by setting \(\frac{\partial f(c)}{\partial c} = 0\),
+    \begin{align}
+        \frac{\partial f(c)}{\partial c} &= 2c (\alpha + c)^{-2} - 2 (\sigma^2 + c^2) (\alpha + c)^{-3} = 0 \\
+        \Rightarrow \frac{\cancel{2}c}{(\alpha + c)^2} &= \frac{\cancel{2} (\sigma^2 + c^2)}{(\alpha + c)^3} \\
+        \Rightarrow c (\alpha + c) &= \sigma^2 + c^2 \\
+        \Rightarrow c\alpha + \cancel{c^2} &= \sigma^2 + \cancel{c^2} \\
+        \Rightarrow c &= \frac{\sigma^2}{\alpha}
+    \end{align}
+    Plugging in our value of \(c\),
+    \begin{align}
+        \frac{\sigma^2 + \left(\frac{\sigma^2}{\alpha}\right)^2}{\left(\alpha + \frac{\sigma^2}{\alpha}\right)} &= \frac{\sigma^2 + \frac{\sigma^4}{\alpha^2}}{\alpha^2 + 2 \sigma^2 + \sigma^4} \\
+        &= \frac{\alpha^2 \sigma^2 + \sigma^4}{\alpha^4 + 2 \alpha^2 \sigma^2 + \sigma^4} \\
+        &= \frac{\sigma^2 (\alpha^2 + \sigma^2)}{(\alpha^2 + \sigma^2)^2} = \frac{\sigma^2}{\alpha^2 + \sigma^2}
+    \end{align}
+\end{proof}
+
+\subsection{}
+
+\begin{theorem}
+    There exists a distribution such that \(\Pr(X \geqslant \E(X) + \alpha) > \frac{\sigma^2(X)}{2 \alpha^2}\) or \(\Pr(X \leqslant \E(X) - \alpha) > \frac{\sigma^2(X)}{2 \alpha^2}\).
+\end{theorem}
+\begin{proof}
+    Consider the distribution \((X, \Pr(X)) = \left\{\left(10, \frac{4}{13}\right), \left(20, \frac{9}{13}\right)\right\}\), and let \(\alpha = 10\).
+\end{proof}
+
+\subsection{}
+
+Given \(\E(X) = 3\), \(\sigma^2(X) = 2\), we must define \(X' = X - 3\) to null \(\E(X)\),
+\begin{align}
+    \Pr(X \geqslant 5) &\leqslant \frac{\E(X)}{5} = \frac{3}{5}  && \text{Markov} \\
+    \Pr(X \geqslant 5) = \Pr(X - 3 \geqslant 2) \leqslant \Pr(|X - 3| \geqslant 2) &\leqslant = \frac{\sigma^2(X)}{2^2} = \frac{2}{4} = \frac{1}{2} && \text{Chebyshev} \\
+    \Pr(X \geqslant 5) = \Pr(X - 3 \geqslant 2) \leqslant \Pr(|X - 3| \geqslant 2) &\leqslant \frac{2}{2^2 + 2} = \frac{1}{3} && \text{Part (b)}
+\end{align}
+
+\section{Sum of Poisson Variables}
+
+\begin{theorem}
+    Given independent Poisson random variables \(X_1, X_2\) with mean \(\lambda_1, \lambda_2\) respectively, \(X_1 + X_2\) is a Poisson random variable with mean \(\lambda_1 + \lambda_2\).
+\end{theorem}
+\begin{proof}
+    \begin{align}
+        \Pr(X_1 + X_2 = k) &= \sum_{i \in [1, k]} \Pr(X_1 = i, X_2 = k - i) \\
+        &= \sum_{i \in [1, k]} \Pr(X_1 = i) \Pr(X_2 = k - i) \\
+        &= \sum_{i \in [1, k]} \frac{\lambda_1^i e^{-\lambda_1}}{i!} \frac{\lambda_2^{k - i} e^{-\lambda_2}}{(k - i)!} \\
+        &= e^{-(\lambda_1 + \lambda_2)} \sum_{i \in [1, k]} \frac{\lambda_1^i}{i!} \frac{\lambda_2^{k - i}}{(k - i)!} \\
+        &= e^{-(\lambda_1 + \lambda_2)} \frac{1}{k!} \sum_{i \in [1, k]} \frac{k!}{i! (k - i)!} \lambda_1^i \lambda_2^{k - i} \\ 
+        &= \frac{(\lambda_1 + \lambda_2)^k}{k!} e^{-(\lambda_1 + \lambda_2)}
+    \end{align}
+\end{proof}
+
+\section{Sundry}
+
+\begin{itemize}
+    \item Victor Zhang \href{mailto:vzhang6@berkeley.edu}{vzhang6@berkeley.edu}
+\end{itemize}
+
+\end{document}
