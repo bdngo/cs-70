@@ -19,7 +19,7 @@ The probability of no collisions when hashing \(\Pr(d_1) = 1\) trivially.
 When hashing \(d_2\), \(\Pr(d_2) = \frac{n - 1}{n}\).
 Inductively,
 \begin{align}
-    \Pr(d_n) &= \prod_{i \in [1, n]} \frac{n - i - 1}{n} = \frac{n!}{n^n} \\
+    \Pr(d_n) &= \prod_{i \in [1, n]} \frac{n - i + 1}{n} = \frac{n!}{n^n} \\
     \lim_{n \to \infty} \frac{n!}{n^n} &= 0
 \end{align}
 
@@ -45,6 +45,7 @@ We have
     \E(C) = \sum_{i \in [1, n]} \frac{i - 1}{n - i + 1}
 \end{equation}
 
+\newpage
 \section{Geometric and Poisson}
 
 \begin{lemma}
@@ -60,9 +61,9 @@ We have
         &= (1 - p)^{i - 1} (1 - p) = (1 - p)^i
     \end{align}
 \end{proof}
-Finding \(\Pr(X \leqslant Y)\),
+Finding \(\Pr(X > Y)\),
 \begin{align}
-    \Pr(X \leqslant Y) &= \sum_{i \geqslant 0} \Pr(Y = i, X > i) \\
+    \Pr(X > Y) &= \sum_{i \geqslant 0} \Pr(Y = i, X > i) \\
     &= \sum_{i \geqslant 0} \Pr(Y = i) \Pr(X > i) \\
     &= \sum_{i \geqslant 0} \frac{\lambda^i}{i!} e^{-\lambda} (1 - p)^i \\
     &= e^{-\lambda} \sum_{i \geqslant 0} \frac{(\lambda (1 - p))^i}{i!} \\
@@ -77,14 +78,15 @@ Finding \(\Pr(X \leqslant Y)\),
 \end{align}
 The distribution of \(\min\{X, Y\}\) for two geometric distributions by inclusion-exclusion is
 \begin{align}
-    \Pr(\min\{X, Y\} = i) &= \Pr(X = i, Y \geqslant i) + \Pr(Y = i \cap X \geqslant i) - \Pr(X = i \cap Y = i) \\
+    \Pr(\min\{X, Y\} = i) &= \Pr(X = i, Y \geqslant i) + \Pr(Y = i, X \geqslant i) - \Pr(X = i, Y = i) \\
     &= \Pr(X = i) \Pr(Y \geqslant i) + \Pr(Y = i) \Pr(X \geqslant i) - \Pr(X = i) \Pr(Y = i) \\
-    &= (1 - p)^{i - 1} p (1 - q)^{i - 1} + (1 - q)^{i - 1} q (1 - p)^{i - 1} + ((1 - p) (1 - q))^{i - 1} pq \\
+    &= (1 - p)^{i - 1} p (1 - q)^{i - 1} + (1 - q)^{i - 1} q (1 - p)^{i - 1} - ((1 - p) (1 - q))^{i - 1} pq \\
     &= ((1 - p) (1 - q))^{i - 1} p + ((1 - p) (1 - q))^{i - 1} q - ((1 - p) (1 - q))^{i - 1} pq \\
     &= ((1 - p) (1 - q))^{i - 1} (p + q - pq)
 \end{align}
 which is a geometric distribution with parameter \(p + q - pq\).
 
+\newpage
 \section{Lunch Meeting}
 
 The probability of both Alice and Bob follow a uniform distribution.
@@ -92,8 +94,7 @@ So the probability of both Alice and Bob meeting appear like this:
 \begin{center}
     \includegraphics[width=0.8\textwidth]{q4.png}
 \end{center}
-Note that since this is a continuous distribution, \(\Pr(A = i, B = i) = 0\) for any time \(i\).
-Thus, \(\Pr(A = i, B = i)\) is nothing more than the area of the parallelogram bounded by the unit square, or \(0.5 \cdot 1 - 0.25^2 = \num{0.4375}\).
+Thus, \(\Pr(A = i, B = i)\) is nothing more than the area of the parallelogram bounded by the unit square, or \(\Pr(A = i, B = i) = 0.5 \cdot 1 - 0.25^2 = \num{0.4375}\).
 
 \section{Sundry}
 
